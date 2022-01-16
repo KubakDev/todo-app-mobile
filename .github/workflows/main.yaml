@@ -1,7 +1,17 @@
 name: todo_app
 
-on: [pull_request, push]
+on: 
+  push:
+    branches: [main]
+    paths-ignore:
+          - "*.md"
+  pull_request:
+    branches: [main]
 
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   build:
     runs-on: ubuntu-latest
