@@ -1,10 +1,8 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:todo_app/app/bloc/auth_bloc.dart';
 import 'package:todo_app/app/routing/vrouter.dart';
-import 'package:todo_app/l10n/l10n.dart';
 import 'package:vrouter/vrouter.dart';
 
 class App extends StatelessWidget {
@@ -31,9 +29,7 @@ class App extends StatelessWidget {
 }
 
 class AppWidget extends StatelessWidget {
-  const AppWidget({
-    Key? key,
-  }) : super(key: key);
+  const AppWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +43,6 @@ class AppWidget extends StatelessWidget {
           accentColor: const Color(0xFF13B9FF),
         ),
       ),
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-      ],
       // beforeEnter: (vRedirector) async {
       //   if (state is AuthLoggedIn && vRedirector.toUrl == '/login') {
       //     vRedirector.to('/home');
@@ -72,7 +64,6 @@ class AppWidget extends StatelessWidget {
           child: child,
         );
       },
-      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }

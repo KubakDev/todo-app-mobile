@@ -27,15 +27,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLogin>((event, emit) {
       authRepo.loginAction();
     });
-    on<AuthLogout>((event, emit) {
-      authRepo.logoutAction();
-    });
-    on<AuthEventError>((event, emit) {
-      emit(AuthError(event.error));
-    });
-    on<AuthEventLoading>((event, emit) {
-      emit(const AuthState.loading());
-    });
+    on<AuthLogout>((event, emit) => authRepo.logoutAction());
+    on<AuthEventError>((event, emit) => emit(AuthError(event.error)));
+    on<AuthEventLoading>((event, emit) => emit(const AuthState.loading()));
     on<AuthEventLoggedIn>((event, emit) {
       emit(AuthState.loggedIn(event.user));
     });

@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rubber/rubber.dart';
 import 'package:todo_app/app/bloc/auth_bloc.dart';
-import 'package:todo_app/login/login.dart';
 // import 'package:todo_app/l10n/l10n.dart';
 import 'package:todo_app/shared/shared.dart';
 
@@ -19,10 +18,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => CounterCubit(),
-      child: const LoginView(),
-    );
+    return const LoginView();
   }
 }
 
