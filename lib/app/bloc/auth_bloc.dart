@@ -49,6 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthenticationRepository authRepo;
   late final StreamSubscription authStatus;
 
+  bool get isLoggedIn => state is AuthLoggedIn;
   @override
   Future<void> close() {
     authStatus.cancel();

@@ -18,7 +18,9 @@ dependencies:
   flutter_svg: ^1.0.1
   freezed_annotation: ^1.1.0
   intl: ^0.17.0
-  rubber: ^1.0.1
+  rubber:
+    git:
+      url: https://github.com/ArinFaraj/rubber.git
   sliding_up_panel: ^2.0.0+1
   vrouter: ^1.2.0+17
 

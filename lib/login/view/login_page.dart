@@ -35,14 +35,14 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView>
     with SingleTickerProviderStateMixin {
-  late RubberAnimationController _controller;
+  late RubberAnimationController controller;
 
   @override
   void initState() {
-    _controller = RubberAnimationController(
+    controller = RubberAnimationController(
       vsync: this,
-      upperBoundValue: AnimationControllerValue(pixel: 410),
-      lowerBoundValue: AnimationControllerValue(pixel: 400),
+      upperBoundValue: AnimationControllerValue(percentage: 0.6),
+      lowerBoundValue: AnimationControllerValue(percentage: 0.55),
       duration: const Duration(milliseconds: 300),
     );
     super.initState();
@@ -52,7 +52,7 @@ class _LoginViewState extends State<LoginView>
   Widget build(BuildContext context) {
     final auth = context.read<AuthBloc>();
     final size = MediaQuery.of(context).size;
-    // final l10n = context.l10n;
+
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is AuthLoadingStored) {
@@ -159,14 +159,6 @@ your important tasks''',
                             style: ButtonStyle(
                               elevation: MaterialStateProperty.all(0),
                               alignment: Alignment.center,
-                              padding: MaterialStateProperty.all(
-                                const EdgeInsets.only(
-                                  right: 80,
-                                  left: 80,
-                                  top: 15,
-                                  bottom: 15,
-                                ),
-                              ),
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.transparent),
                               shape: MaterialStateProperty.all(
@@ -178,24 +170,38 @@ your important tasks''',
                             onPressed: () {
                               auth.add(const AuthEvent.login());
                             },
-                            child: state is AuthLoading
-                                ? const CircularProgressIndicator()
-                                : const Text(
-                                    'Get Started',
-                                    style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      // fontWeight: FontWeight.w500,
-                                      fontSize: 24,
-                                    ),
-                                  ),
+                            child: SizedBox(
+                              width: size.width * 0.65,
+                              height: 55,
+                              child: Center(
+                                child: state is AuthLoading
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : const Text(
+                                        'Get Started',
+                                        style: TextStyle(
+                                          color: Color(0xffffffff),
+                                          // fontWeight: FontWeight.w500,
+                                          fontSize: 24,
+                                        ),
+                                      ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
+                      const SizedBox(height: 6),
                       if (state is AuthError)
                         Center(
                           child: SizedBox(
-                            height: 100,
-                            child: Text('${state.error}'),
+                            height: 40,
+                            child: SingleChildScrollView(
+                              child: Text(
+                                '${state.error}',
+                                style: TextStyle(color: Colors.redAccent[200]),
+                              ),
+                            ),
                           ),
                         ),
                       const Expanded(flex: 2, child: SizedBox.expand()),
@@ -203,7 +209,7 @@ your important tasks''',
                   ),
                 ),
               ),
-              animationController: _controller,
+              animationController: controller,
             ),
           ),
           // floatingActionButton: Column(
@@ -226,66 +232,3 @@ your important tasks''',
     );
   }
 }
-
-class CounterText extends StatelessWidget {
-  const CounterText({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final count = context.select((CounterCubit cubit) => cubit.state);
-    return Text('$count', style: theme.textTheme.headline1);
-  }
-}
-// class CounterView extends StatelessWidget {
-//   const CounterView({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final size = MediaQuery.of(context).size;
-//     // final l10n = context.l10n;
-//     return Scaffold(
-//       backgroundColor: kPrimaryColor4,
-//       body: SafeArea(
-//         child: SlidingUpPanel(
-//           borderRadius: const BorderRadius.only(
-//             topLeft: Radius.circular(30),
-//             topRight: Radius.circular(30),
-//           ),
-//           minHeight: size.height * 0.45,
-//           panel: const Center(
-//             child: Text('This is the sliding Widget'),
-//           ),
-//           body: Center(
-//             child: Column(
-//               children: [
-//                 Expanded(child: SvgPicture.asset('assets/images/hero_img.svg')),
-//                 Expanded(
-//                   child: SizedBox(
-//                     height: size.height * 0.45,
-//                   ),
-//                 ),
-//                 //CounterText(),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//       floatingActionButton: Column(
-//         mainAxisAlignment: MainAxisAlignment.end,
-//         crossAxisAlignment: CrossAxisAlignment.end,
-//         children: [
-//           FloatingActionButton(
-//             onPressed: () => context.read<CounterCubit>().increment(),
-//             child: const Icon(Icons.add),
-//           ),
-//           const SizedBox(height: 8),
-//           FloatingActionButton(
-//             onPressed: () => context.read<CounterCubit>().decrement(),
-//             child: const Icon(Icons.remove),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

@@ -563,9 +563,11 @@ packages:
   rubber:
     dependency: "direct main"
     description:
-      name: rubber
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "2efd332c74b90122cfc60b118c2c7365ed4c86a8"
+      url: "https://github.com/ArinFaraj/rubber.git"
+    source: git
     version: "1.0.1"
   shelf:
     dependency: transitive

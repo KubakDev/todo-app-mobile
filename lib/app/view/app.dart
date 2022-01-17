@@ -1,5 +1,4 @@
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -38,47 +37,42 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        if (kDebugMode) {
-          print('rebuilding app with $state');
-        }
-        return VRouter(
-          routes: routes,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-            colorScheme: ColorScheme.fromSwatch(
-              accentColor: const Color(0xFF13B9FF),
-            ),
-          ),
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-          ],
-          beforeEnter: (vRedirector) async {
-            if (state is AuthLoggedIn && vRedirector.toUrl == '/login') {
-              vRedirector.to('/home');
-            } else if (vRedirector.toUrl != '/login') {
-              vRedirector.to('/login');
+    final authBloc = context.read<AuthBloc>();
+    return VRouter(
+      routes: generateRoutes(authBloc),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
+        colorScheme: ColorScheme.fromSwatch(
+          accentColor: const Color(0xFF13B9FF),
+        ),
+      ),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+      ],
+      // beforeEnter: (vRedirector) async {
+      //   if (state is AuthLoggedIn && vRedirector.toUrl == '/login') {
+      //     vRedirector.to('/home');
+      //   } else if (vRedirector.toUrl != '/login' &&
+      //       state is! AuthLoggedIn) {
+      //     vRedirector.to('/login');
+      //   }
+      // },
+      builder: (context, child) {
+        return BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            final vrouter = context.vRouter;
+            if (state is AuthLoggedIn && vrouter.path == loginPath) {
+              vrouter.to(homePath);
+            } else if (vrouter.path != loginPath && state is! AuthLoggedIn) {
+              vrouter.to(loginPath);
             }
           },
-          builder: (context, child) {
-            return BlocListener<AuthBloc, AuthState>(
-              listener: (context, state) {
-                final of = VRouter.of(context);
-                if (state is AuthLoggedIn && of.path == loginPath) {
-                  of.to(homePath);
-                } else if (of.path != loginPath) {
-                  of.to(loginPath);
-                }
-              },
-              child: child,
-            );
-          },
-          supportedLocales: AppLocalizations.supportedLocales,
+          child: child,
         );
       },
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }
