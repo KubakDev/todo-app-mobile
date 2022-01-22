@@ -11,8 +11,6 @@ import 'package:todo_app/bootstrap.dart';
 
 void main() {
   bootstrap(
-    () => App(
-      authRepo: AuthenticationRepository(),
-    ),
+    () => App(authRepo: AuthenticationRepository()),
   );
 }
