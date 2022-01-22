@@ -4,9 +4,7 @@ part of 'auth_bloc.dart';
 class AuthEvent with _$AuthEvent {
   const factory AuthEvent.login() = AuthLogin;
   const factory AuthEvent.logout() = AuthLogout;
-  const factory AuthEvent.error(String error) = AuthEventError;
-  const factory AuthEvent.loggedIn(User user) = AuthEventLoggedIn;
-  const factory AuthEvent.loggedOut() = AuthEventLoggedOut;
-  const factory AuthEvent.loading() = AuthEventLoading;
-  const factory AuthEvent.loadingstored() = AuthEventLoadingStored;
+  const factory AuthEvent.repoStateChanged(AuthRepoState authRepoState) =
+      AuthRepoStateChanged;
+  const factory AuthEvent.refreshToken() = AuthEventRefreshToken;
 }

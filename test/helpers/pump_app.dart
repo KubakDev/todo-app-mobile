@@ -21,7 +21,7 @@ extension PumpApp on WidgetTester {
       Future.value,
     );
     when(() => mockAuthRepository.status)
-        .thenAnswer((_) => Stream.fromIterable([AuthStateloggedOut()]));
+        .thenAnswer((_) => Stream.fromIterable([AuthRepologgedOut()]));
 
     return pumpWidget(
       RepositoryProvider.value(

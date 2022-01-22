@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/app/bloc/auth_bloc.dart';
 import 'package:todo_app/app/routing/vrouter.dart';
+import 'package:todo_app/shared/shared.dart';
 import 'package:vrouter/vrouter.dart';
 
 class App extends StatelessWidget {
@@ -18,8 +19,11 @@ class App extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return BlocProvider(
-            create: (context) =>
-                AuthBloc(context.read<AuthenticationRepository>()),
+            create: (context) {
+              return AuthBloc(
+                context.read<AuthenticationRepository>(),
+              );
+            },
             child: const AppWidget(),
           );
         },
@@ -34,23 +38,11 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = context.read<AuthBloc>();
+
     return VRouter(
       routes: generateRoutes(authBloc),
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: const Color(0xFF13B9FF),
-        ),
-      ),
-      // beforeEnter: (vRedirector) async {
-      //   if (state is AuthLoggedIn && vRedirector.toUrl == '/login') {
-      //     vRedirector.to('/home');
-      //   } else if (vRedirector.toUrl != '/login' &&
-      //       state is! AuthLoggedIn) {
-      //     vRedirector.to('/login');
-      //   }
-      // },
+      theme: themeData(context),
       builder: (context, child) {
         return BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {

@@ -25,7 +25,7 @@ void main() {
         Future.value,
       );
       when(() => mockAuthenticationRepository.status)
-          .thenAnswer((_) => Stream.fromIterable([AuthStateloggedOut()]));
+          .thenAnswer((_) => Stream.fromIterable([AuthRepologgedOut()]));
       await tester.pumpWidget(
         App(
           authRepo: mockAuthenticationRepository,
@@ -41,7 +41,9 @@ void main() {
         Future.value,
       );
       when(() => mockAuthenticationRepository.status).thenAnswer(
-        (_) => Stream.fromIterable([const AuthStateloggedIn(User('test'))]),
+        (_) => Stream.fromIterable(
+          [const AuthRepologgedIn(User('test', 'test'))],
+        ),
       );
       await tester.pumpWidget(
         App(
@@ -58,7 +60,7 @@ void main() {
         Future.value,
       );
       final _controller = StreamController<AuthRepoState>()
-        ..add(AuthStateloggedOut());
+        ..add(AuthRepologgedOut());
 
       when(() => mockAuthenticationRepository.status).thenAnswer(
         (_) => _controller.stream,
@@ -71,7 +73,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.byType(LoginPage), findsOneWidget);
-      _controller.add(const AuthStateloggedIn(User('test')));
+      _controller.add(const AuthRepologgedIn(User('test', 'test')));
 
       await tester.pumpAndSettle();
       expect(find.byType(HomePage), findsOneWidget);

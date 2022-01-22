@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:authentication_repository/src/models/models.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
@@ -11,23 +12,29 @@ const String auth0Domain = 'dev-lmrxa-v2.eu.auth0.com';
 const String auth0ClientId = 'wnMlcJ2Cy414JOsjMLPjNTVEVpiFExCV';
 const String auth0RedirectUri = 'io.kubakdev.todoapp://oauthredirect';
 const String auth0Issuer = 'https://$auth0Domain';
+const todoSettingsBoxName = 'todo_settings';
 
 class AuthenticationRepository {
   AuthenticationRepository() : appAuth = FlutterAppAuth();
 
+  final box = Hive.box<dynamic>(todoSettingsBoxName);
   final FlutterAppAuth appAuth;
 
   final _controller = StreamController<AuthRepoState>();
 
   Stream<AuthRepoState> get status async* {
-    yield AuthStateloggedOut();
+    yield AuthRepologgedOut();
     yield* _controller.stream;
   }
 
   Future<void> initAction() async {
+    _controller.add(AuthRepoRefreshingToken());
+
     final storedRefreshToken = await secureStorage.read(key: 'refresh_token');
-    if (storedRefreshToken == null) return;
-    _controller.add(AuthStateloadingstored());
+    if (storedRefreshToken == null) {
+      _controller.add(AuthRepologgedOut());
+      return;
+    }
 
     try {
       final response = await appAuth.token(
@@ -36,32 +43,32 @@ class AuthenticationRepository {
           auth0RedirectUri,
           issuer: auth0Issuer,
           refreshToken: storedRefreshToken,
+          additionalParameters: {'audience': 'http://localhost:5000'},
         ),
       );
       if (response != null &&
           response.idToken != null &&
           response.accessToken != null) {
         final idToken = parseIdToken(response.idToken!);
-        // final profile = await getUserDetails(response.accessToken!);
-
+        final profile = await getUserDetails(response.accessToken!);
+        await box.put('token', response.accessToken);
         await secureStorage.write(
           key: 'refresh_token',
           value: response.refreshToken,
         );
-        // profile['picture']
         _controller.add(
-          AuthStateloggedIn(
+          AuthRepologgedIn(
             User(
-              idToken['name'] as String? ?? '',
+              idToken['nickname'] as String? ?? '',
+              profile['picture'] as String? ?? '',
             ),
           ),
         );
       } else {
-        _controller
-            .add(const AuthStatehasError('Code 1 Auth response is null'));
+        _controller.add(const AuthRepohasError('Code 1 Auth response is null'));
       }
     } on Exception catch (e, s) {
-      _controller.add(AuthStatehasError('Code 2 $e $s'));
+      _controller.add(AuthRepohasError('Code 2 $e $s'));
       await logoutAction();
     }
   }
@@ -75,7 +82,7 @@ class AuthenticationRepository {
     return jsonDecode2 as Map<String, dynamic>;
   }
 
-  Future<Map<String, Object>> getUserDetails(String accessToken) async {
+  Future<Map<String, dynamic>> getUserDetails(String accessToken) async {
     const url = 'https://$auth0Domain/userinfo';
     final response = await http.get(
       Uri.parse(url),
@@ -83,14 +90,14 @@ class AuthenticationRepository {
     );
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body) as Map<String, Object>;
+      return jsonDecode(response.body) as Map<String, dynamic>;
     } else {
       throw Exception('Failed to get user details');
     }
   }
 
   Future<void> loginAction() async {
-    _controller.add(AuthStateloading());
+    _controller.add(AuthRepoloading());
 
     try {
       final result = await appAuth.authorizeAndExchangeCode(
@@ -99,14 +106,15 @@ class AuthenticationRepository {
           auth0RedirectUri,
           issuer: 'https://$auth0Domain',
           scopes: <String>['openid', 'profile', 'offline_access'],
-          // promptValues: ['login']
+          additionalParameters: {'audience': 'http://localhost:5000'},
         ),
       );
       if (result != null &&
           result.idToken != null &&
           result.accessToken != null) {
         final idToken = parseIdToken(result.idToken!);
-        // final profile = await getUserDetails(result.accessToken);
+        final profile = await getUserDetails(result.accessToken!);
+        await box.put('token', result.accessToken);
 
         await secureStorage.write(
           key: 'refresh_token',
@@ -114,24 +122,25 @@ class AuthenticationRepository {
         );
 
         _controller.add(
-          AuthStateloggedIn(
+          AuthRepologgedIn(
             User(
-              idToken['name'] as String? ?? '',
+              idToken['nickname'] as String? ?? '',
+              profile['picture'] as String? ?? '',
             ),
           ),
         );
       } else {
         _controller
-            .add(const AuthStatehasError('Code 3 Auth login response is null'));
+            .add(const AuthRepohasError('Code 3 Auth login response is null'));
       }
     } on Exception catch (e, s) {
-      _controller.add(AuthStatehasError('Code 4 $e $s'));
+      _controller.add(AuthRepohasError('Code 4 $e $s'));
     }
   }
 
   Future<void> logoutAction() async {
     await secureStorage.delete(key: 'refresh_token');
-    _controller.add(AuthStateloggedOut());
+    _controller.add(AuthRepologgedOut());
   }
 
   void dispose() => _controller.close();

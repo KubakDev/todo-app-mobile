@@ -8,12 +8,12 @@ class AuthRepoState extends Equatable {
   List<Object> get props => [];
 }
 
-class AuthStateloading extends AuthRepoState {}
+class AuthRepoloading extends AuthRepoState {}
 
-class AuthStateloadingstored extends AuthRepoState {}
+class AuthRepoRefreshingToken extends AuthRepoState {}
 
-class AuthStateloggedIn extends AuthRepoState {
-  const AuthStateloggedIn(this.user);
+class AuthRepologgedIn extends AuthRepoState {
+  const AuthRepologgedIn(this.user);
 
   final User user;
 
@@ -21,10 +21,10 @@ class AuthStateloggedIn extends AuthRepoState {
   List<Object> get props => [user];
 }
 
-class AuthStateloggedOut extends AuthRepoState {}
+class AuthRepologgedOut extends AuthRepoState {}
 
-class AuthStatehasError extends AuthRepoState {
-  const AuthStatehasError(this.error);
+class AuthRepohasError extends AuthRepoState {
+  const AuthRepohasError(this.error);
 
   final String error;
 

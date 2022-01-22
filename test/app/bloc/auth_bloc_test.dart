@@ -21,7 +21,7 @@ void main() {
         Future.value,
       );
       when(() => mockAuthRepository.status)
-          .thenAnswer((_) => Stream.fromIterable([AuthStateloggedOut()]));
+          .thenAnswer((_) => Stream.fromIterable([AuthRepologgedOut()]));
     });
     test('initial state is not logged in', () {
       expect(
