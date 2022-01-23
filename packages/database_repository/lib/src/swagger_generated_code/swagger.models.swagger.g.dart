@@ -12,7 +12,6 @@ CreateTodo _$CreateTodoFromJson(Map<String, dynamic> json) => CreateTodo(
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
       isComplete: json['isComplete'] as bool?,
-      isTimeAvailable: json['isTimeAvailable'] as bool?,
     );
 
 Map<String, dynamic> _$CreateTodoToJson(CreateTodo instance) =>
@@ -21,7 +20,6 @@ Map<String, dynamic> _$CreateTodoToJson(CreateTodo instance) =>
       'note': instance.note,
       'date': instance.date?.toIso8601String(),
       'isComplete': instance.isComplete,
-      'isTimeAvailable': instance.isTimeAvailable,
     };
 
 Todo _$TodoFromJson(Map<String, dynamic> json) => Todo(
@@ -32,7 +30,6 @@ Todo _$TodoFromJson(Map<String, dynamic> json) => Todo(
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
       isComplete: json['isComplete'] as bool?,
-      isTimeAvailable: json['isTimeAvailable'] as bool?,
     );
 
 Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
@@ -42,5 +39,4 @@ Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
       'note': instance.note,
       'date': instance.date?.toIso8601String(),
       'isComplete': instance.isComplete,
-      'isTimeAvailable': instance.isTimeAvailable,
     };

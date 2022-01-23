@@ -241,9 +241,6 @@
           },
           "isComplete": {
             "type": "boolean"
-          },
-          "isTimeAvailable": {
-            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -272,9 +269,6 @@
             "format": "date-time"
           },
           "isComplete": {
-            "type": "boolean"
-          },
-          "isTimeAvailable": {
             "type": "boolean"
           }
         },

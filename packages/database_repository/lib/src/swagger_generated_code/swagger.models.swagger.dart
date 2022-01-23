@@ -10,7 +10,6 @@ class CreateTodo {
     this.note,
     this.date,
     this.isComplete,
-    this.isTimeAvailable,
   });
 
   factory CreateTodo.fromJson(Map<String, dynamic> json) =>
@@ -24,8 +23,6 @@ class CreateTodo {
   final DateTime? date;
   @JsonKey(name: 'isComplete')
   final bool? isComplete;
-  @JsonKey(name: 'isTimeAvailable')
-  final bool? isTimeAvailable;
   static const fromJsonFactory = _$CreateTodoFromJson;
   static const toJsonFactory = _$CreateTodoToJson;
   Map<String, dynamic> toJson() => _$CreateTodoToJson(this);
@@ -42,10 +39,7 @@ class CreateTodo {
                 const DeepCollectionEquality().equals(other.date, date)) &&
             (identical(other.isComplete, isComplete) ||
                 const DeepCollectionEquality()
-                    .equals(other.isComplete, isComplete)) &&
-            (identical(other.isTimeAvailable, isTimeAvailable) ||
-                const DeepCollectionEquality()
-                    .equals(other.isTimeAvailable, isTimeAvailable)));
+                    .equals(other.isComplete, isComplete)));
   }
 
   @override
@@ -54,23 +48,17 @@ class CreateTodo {
       const DeepCollectionEquality().hash(note) ^
       const DeepCollectionEquality().hash(date) ^
       const DeepCollectionEquality().hash(isComplete) ^
-      const DeepCollectionEquality().hash(isTimeAvailable) ^
       runtimeType.hashCode;
 }
 
 extension $CreateTodoExtension on CreateTodo {
   CreateTodo copyWith(
-      {String? title,
-      String? note,
-      DateTime? date,
-      bool? isComplete,
-      bool? isTimeAvailable}) {
+      {String? title, String? note, DateTime? date, bool? isComplete}) {
     return CreateTodo(
         title: title ?? this.title,
         note: note ?? this.note,
         date: date ?? this.date,
-        isComplete: isComplete ?? this.isComplete,
-        isTimeAvailable: isTimeAvailable ?? this.isTimeAvailable);
+        isComplete: isComplete ?? this.isComplete);
   }
 }
 
@@ -83,7 +71,6 @@ class Todo {
     this.note,
     this.date,
     this.isComplete,
-    this.isTimeAvailable,
   });
 
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
@@ -100,8 +87,6 @@ class Todo {
   final DateTime? date;
   @JsonKey(name: 'isComplete')
   final bool? isComplete;
-  @JsonKey(name: 'isTimeAvailable')
-  final bool? isTimeAvailable;
   static const fromJsonFactory = _$TodoFromJson;
   static const toJsonFactory = _$TodoToJson;
   Map<String, dynamic> toJson() => _$TodoToJson(this);
@@ -122,10 +107,7 @@ class Todo {
                 const DeepCollectionEquality().equals(other.date, date)) &&
             (identical(other.isComplete, isComplete) ||
                 const DeepCollectionEquality()
-                    .equals(other.isComplete, isComplete)) &&
-            (identical(other.isTimeAvailable, isTimeAvailable) ||
-                const DeepCollectionEquality()
-                    .equals(other.isTimeAvailable, isTimeAvailable)));
+                    .equals(other.isComplete, isComplete)));
   }
 
   @override
@@ -136,7 +118,6 @@ class Todo {
       const DeepCollectionEquality().hash(note) ^
       const DeepCollectionEquality().hash(date) ^
       const DeepCollectionEquality().hash(isComplete) ^
-      const DeepCollectionEquality().hash(isTimeAvailable) ^
       runtimeType.hashCode;
 }
 
@@ -147,15 +128,13 @@ extension $TodoExtension on Todo {
       String? title,
       String? note,
       DateTime? date,
-      bool? isComplete,
-      bool? isTimeAvailable}) {
+      bool? isComplete}) {
     return Todo(
         id: id ?? this.id,
         userId: userId ?? this.userId,
         title: title ?? this.title,
         note: note ?? this.note,
         date: date ?? this.date,
-        isComplete: isComplete ?? this.isComplete,
-        isTimeAvailable: isTimeAvailable ?? this.isTimeAvailable);
+        isComplete: isComplete ?? this.isComplete);
   }
 }

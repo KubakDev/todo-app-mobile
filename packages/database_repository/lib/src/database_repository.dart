@@ -16,7 +16,7 @@ class DatabaseRepository {
         Swagger.create(),
       ],
       converter: $JsonSerializableConverter(),
-      baseUrl: 'http://a48a-62-201-240-145.ngrok.io',
+      baseUrl: 'http://82ca-62-201-232-11.ngrok.io',
       interceptors: <dynamic>[
         (Request request) => applyHeader(
               request,
@@ -67,7 +67,6 @@ class DatabaseRepository {
       body: CreateTodo(
         title: todo.title,
         date: todo.date,
-        isTimeAvailable: todo.isTimeAvailable,
         isComplete: todo.isComplete,
         note: todo.note,
       ),
@@ -100,7 +99,6 @@ class DatabaseRepository {
       body: CreateTodo(
         title: todo.title,
         date: todo.date,
-        isTimeAvailable: todo.isTimeAvailable,
         note: todo.note,
         isComplete: todo.isComplete,
       ),
