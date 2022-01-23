@@ -19,17 +19,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLogout>((_, __) => authRepo.logoutAction());
     on<AuthEventRefreshToken>((_, __) => authRepo.initAction());
     on<AuthRepoStateChanged>((event, emit) {
-      if (event.authRepoState is AuthRepoloading) {
+      final authS = event.authRepoState;
+      if (authS is AuthRepoloading) {
         emit(const AuthLoading());
-      } else if (event.authRepoState is AuthRepohasError) {
-        emit(AuthError((event.authRepoState as AuthRepohasError).error));
-      } else if (event.authRepoState is AuthRepologgedIn) {
+      } else if (authS is AuthRepohasError) {
+        emit(AuthError(authS.error));
+      } else if (authS is AuthRepologgedIn) {
         emit(
-          AuthLoggedIn((event.authRepoState as AuthRepologgedIn).user),
+          AuthLoggedIn(authS.user),
         );
-      } else if (event.authRepoState is AuthRepologgedOut) {
+      } else if (authS is AuthRepologgedOut) {
         emit(const AuthNotLoggedIn());
-      } else if (event is AuthRepoRefreshingToken) {
+      } else if (authS is AuthRepoRefreshingToken) {
         emit(const AuthRefreshingToken());
       }
     });

@@ -44,6 +44,13 @@ class _$TodoEventTearOff {
     );
   }
 
+  TodoApplyUpdateEvent applyUpdate({required List<Todo> todos, String? error}) {
+    return TodoApplyUpdateEvent(
+      todos: todos,
+      error: error,
+    );
+  }
+
   TodoUnAuthorizedEvent unAuthorized() {
     return const TodoUnAuthorizedEvent();
   }
@@ -60,6 +67,7 @@ mixin _$TodoEvent {
     required TResult Function(Todo todo, int index) updateTodo,
     required TResult Function(String id, int index) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
+    required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
   }) =>
       throw _privateConstructorUsedError;
@@ -69,6 +77,7 @@ mixin _$TodoEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
   }) =>
       throw _privateConstructorUsedError;
@@ -78,6 +87,7 @@ mixin _$TodoEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
     required TResult orElse(),
   }) =>
@@ -88,6 +98,7 @@ mixin _$TodoEvent {
     required TResult Function(TodoUpdateEvent value) updateTodo,
     required TResult Function(TodoDeleteEvent value) deleteTodo,
     required TResult Function(TodoGetEvent value) getTodos,
+    required TResult Function(TodoApplyUpdateEvent value) applyUpdate,
     required TResult Function(TodoUnAuthorizedEvent value) unAuthorized,
   }) =>
       throw _privateConstructorUsedError;
@@ -97,6 +108,7 @@ mixin _$TodoEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
   }) =>
       throw _privateConstructorUsedError;
@@ -106,6 +118,7 @@ mixin _$TodoEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
     required TResult orElse(),
   }) =>
@@ -160,15 +173,23 @@ class _$TodoAddEventCopyWithImpl<$Res> extends _$TodoEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TodoAddEvent implements TodoAddEvent {
+class _$TodoAddEvent with DiagnosticableTreeMixin implements TodoAddEvent {
   const _$TodoAddEvent(this.todo);
 
   @override
   final Todo todo;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'TodoEvent.addTodo(todo: $todo)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'TodoEvent.addTodo'))
+      ..add(DiagnosticsProperty('todo', todo));
   }
 
   @override
@@ -195,6 +216,7 @@ class _$TodoAddEvent implements TodoAddEvent {
     required TResult Function(Todo todo, int index) updateTodo,
     required TResult Function(String id, int index) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
+    required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
   }) {
     return addTodo(todo);
@@ -207,6 +229,7 @@ class _$TodoAddEvent implements TodoAddEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
   }) {
     return addTodo?.call(todo);
@@ -219,6 +242,7 @@ class _$TodoAddEvent implements TodoAddEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
     required TResult orElse(),
   }) {
@@ -235,6 +259,7 @@ class _$TodoAddEvent implements TodoAddEvent {
     required TResult Function(TodoUpdateEvent value) updateTodo,
     required TResult Function(TodoDeleteEvent value) deleteTodo,
     required TResult Function(TodoGetEvent value) getTodos,
+    required TResult Function(TodoApplyUpdateEvent value) applyUpdate,
     required TResult Function(TodoUnAuthorizedEvent value) unAuthorized,
   }) {
     return addTodo(this);
@@ -247,6 +272,7 @@ class _$TodoAddEvent implements TodoAddEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
   }) {
     return addTodo?.call(this);
@@ -259,6 +285,7 @@ class _$TodoAddEvent implements TodoAddEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
     required TResult orElse(),
   }) {
@@ -316,7 +343,9 @@ class _$TodoUpdateEventCopyWithImpl<$Res> extends _$TodoEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TodoUpdateEvent implements TodoUpdateEvent {
+class _$TodoUpdateEvent
+    with DiagnosticableTreeMixin
+    implements TodoUpdateEvent {
   const _$TodoUpdateEvent(this.todo, this.index);
 
   @override
@@ -325,8 +354,17 @@ class _$TodoUpdateEvent implements TodoUpdateEvent {
   final int index;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'TodoEvent.updateTodo(todo: $todo, index: $index)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'TodoEvent.updateTodo'))
+      ..add(DiagnosticsProperty('todo', todo))
+      ..add(DiagnosticsProperty('index', index));
   }
 
   @override
@@ -356,6 +394,7 @@ class _$TodoUpdateEvent implements TodoUpdateEvent {
     required TResult Function(Todo todo, int index) updateTodo,
     required TResult Function(String id, int index) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
+    required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
   }) {
     return updateTodo(todo, index);
@@ -368,6 +407,7 @@ class _$TodoUpdateEvent implements TodoUpdateEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
   }) {
     return updateTodo?.call(todo, index);
@@ -380,6 +420,7 @@ class _$TodoUpdateEvent implements TodoUpdateEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
     required TResult orElse(),
   }) {
@@ -396,6 +437,7 @@ class _$TodoUpdateEvent implements TodoUpdateEvent {
     required TResult Function(TodoUpdateEvent value) updateTodo,
     required TResult Function(TodoDeleteEvent value) deleteTodo,
     required TResult Function(TodoGetEvent value) getTodos,
+    required TResult Function(TodoApplyUpdateEvent value) applyUpdate,
     required TResult Function(TodoUnAuthorizedEvent value) unAuthorized,
   }) {
     return updateTodo(this);
@@ -408,6 +450,7 @@ class _$TodoUpdateEvent implements TodoUpdateEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
   }) {
     return updateTodo?.call(this);
@@ -420,6 +463,7 @@ class _$TodoUpdateEvent implements TodoUpdateEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
     required TResult orElse(),
   }) {
@@ -478,7 +522,9 @@ class _$TodoDeleteEventCopyWithImpl<$Res> extends _$TodoEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TodoDeleteEvent implements TodoDeleteEvent {
+class _$TodoDeleteEvent
+    with DiagnosticableTreeMixin
+    implements TodoDeleteEvent {
   const _$TodoDeleteEvent(this.id, this.index);
 
   @override
@@ -487,8 +533,17 @@ class _$TodoDeleteEvent implements TodoDeleteEvent {
   final int index;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'TodoEvent.deleteTodo(id: $id, index: $index)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'TodoEvent.deleteTodo'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('index', index));
   }
 
   @override
@@ -518,6 +573,7 @@ class _$TodoDeleteEvent implements TodoDeleteEvent {
     required TResult Function(Todo todo, int index) updateTodo,
     required TResult Function(String id, int index) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
+    required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
   }) {
     return deleteTodo(id, index);
@@ -530,6 +586,7 @@ class _$TodoDeleteEvent implements TodoDeleteEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
   }) {
     return deleteTodo?.call(id, index);
@@ -542,6 +599,7 @@ class _$TodoDeleteEvent implements TodoDeleteEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
     required TResult orElse(),
   }) {
@@ -558,6 +616,7 @@ class _$TodoDeleteEvent implements TodoDeleteEvent {
     required TResult Function(TodoUpdateEvent value) updateTodo,
     required TResult Function(TodoDeleteEvent value) deleteTodo,
     required TResult Function(TodoGetEvent value) getTodos,
+    required TResult Function(TodoApplyUpdateEvent value) applyUpdate,
     required TResult Function(TodoUnAuthorizedEvent value) unAuthorized,
   }) {
     return deleteTodo(this);
@@ -570,6 +629,7 @@ class _$TodoDeleteEvent implements TodoDeleteEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
   }) {
     return deleteTodo?.call(this);
@@ -582,6 +642,7 @@ class _$TodoDeleteEvent implements TodoDeleteEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
     required TResult orElse(),
   }) {
@@ -640,7 +701,7 @@ class _$TodoGetEventCopyWithImpl<$Res> extends _$TodoEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TodoGetEvent implements TodoGetEvent {
+class _$TodoGetEvent with DiagnosticableTreeMixin implements TodoGetEvent {
   const _$TodoGetEvent(this.from, this.to);
 
   @override
@@ -649,8 +710,17 @@ class _$TodoGetEvent implements TodoGetEvent {
   final DateTime to;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'TodoEvent.getTodos(from: $from, to: $to)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'TodoEvent.getTodos'))
+      ..add(DiagnosticsProperty('from', from))
+      ..add(DiagnosticsProperty('to', to));
   }
 
   @override
@@ -680,6 +750,7 @@ class _$TodoGetEvent implements TodoGetEvent {
     required TResult Function(Todo todo, int index) updateTodo,
     required TResult Function(String id, int index) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
+    required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
   }) {
     return getTodos(from, to);
@@ -692,6 +763,7 @@ class _$TodoGetEvent implements TodoGetEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
   }) {
     return getTodos?.call(from, to);
@@ -704,6 +776,7 @@ class _$TodoGetEvent implements TodoGetEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
     required TResult orElse(),
   }) {
@@ -720,6 +793,7 @@ class _$TodoGetEvent implements TodoGetEvent {
     required TResult Function(TodoUpdateEvent value) updateTodo,
     required TResult Function(TodoDeleteEvent value) deleteTodo,
     required TResult Function(TodoGetEvent value) getTodos,
+    required TResult Function(TodoApplyUpdateEvent value) applyUpdate,
     required TResult Function(TodoUnAuthorizedEvent value) unAuthorized,
   }) {
     return getTodos(this);
@@ -732,6 +806,7 @@ class _$TodoGetEvent implements TodoGetEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
   }) {
     return getTodos?.call(this);
@@ -744,6 +819,7 @@ class _$TodoGetEvent implements TodoGetEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
     required TResult orElse(),
   }) {
@@ -761,6 +837,188 @@ abstract class TodoGetEvent implements TodoEvent {
   DateTime get to;
   @JsonKey(ignore: true)
   $TodoGetEventCopyWith<TodoGetEvent> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TodoApplyUpdateEventCopyWith<$Res> {
+  factory $TodoApplyUpdateEventCopyWith(TodoApplyUpdateEvent value,
+          $Res Function(TodoApplyUpdateEvent) then) =
+      _$TodoApplyUpdateEventCopyWithImpl<$Res>;
+  $Res call({List<Todo> todos, String? error});
+}
+
+/// @nodoc
+class _$TodoApplyUpdateEventCopyWithImpl<$Res>
+    extends _$TodoEventCopyWithImpl<$Res>
+    implements $TodoApplyUpdateEventCopyWith<$Res> {
+  _$TodoApplyUpdateEventCopyWithImpl(
+      TodoApplyUpdateEvent _value, $Res Function(TodoApplyUpdateEvent) _then)
+      : super(_value, (v) => _then(v as TodoApplyUpdateEvent));
+
+  @override
+  TodoApplyUpdateEvent get _value => super._value as TodoApplyUpdateEvent;
+
+  @override
+  $Res call({
+    Object? todos = freezed,
+    Object? error = freezed,
+  }) {
+    return _then(TodoApplyUpdateEvent(
+      todos: todos == freezed
+          ? _value.todos
+          : todos // ignore: cast_nullable_to_non_nullable
+              as List<Todo>,
+      error: error == freezed
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$TodoApplyUpdateEvent
+    with DiagnosticableTreeMixin
+    implements TodoApplyUpdateEvent {
+  const _$TodoApplyUpdateEvent({required this.todos, this.error});
+
+  @override
+  final List<Todo> todos;
+  @override
+  final String? error;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'TodoEvent.applyUpdate(todos: $todos, error: $error)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'TodoEvent.applyUpdate'))
+      ..add(DiagnosticsProperty('todos', todos))
+      ..add(DiagnosticsProperty('error', error));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is TodoApplyUpdateEvent &&
+            const DeepCollectionEquality().equals(other.todos, todos) &&
+            const DeepCollectionEquality().equals(other.error, error));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(todos),
+      const DeepCollectionEquality().hash(error));
+
+  @JsonKey(ignore: true)
+  @override
+  $TodoApplyUpdateEventCopyWith<TodoApplyUpdateEvent> get copyWith =>
+      _$TodoApplyUpdateEventCopyWithImpl<TodoApplyUpdateEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Todo todo) addTodo,
+    required TResult Function(Todo todo, int index) updateTodo,
+    required TResult Function(String id, int index) deleteTodo,
+    required TResult Function(DateTime from, DateTime to) getTodos,
+    required TResult Function(List<Todo> todos, String? error) applyUpdate,
+    required TResult Function() unAuthorized,
+  }) {
+    return applyUpdate(todos, error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(Todo todo)? addTodo,
+    TResult Function(Todo todo, int index)? updateTodo,
+    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
+    TResult Function()? unAuthorized,
+  }) {
+    return applyUpdate?.call(todos, error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Todo todo)? addTodo,
+    TResult Function(Todo todo, int index)? updateTodo,
+    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
+    TResult Function()? unAuthorized,
+    required TResult orElse(),
+  }) {
+    if (applyUpdate != null) {
+      return applyUpdate(todos, error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(TodoAddEvent value) addTodo,
+    required TResult Function(TodoUpdateEvent value) updateTodo,
+    required TResult Function(TodoDeleteEvent value) deleteTodo,
+    required TResult Function(TodoGetEvent value) getTodos,
+    required TResult Function(TodoApplyUpdateEvent value) applyUpdate,
+    required TResult Function(TodoUnAuthorizedEvent value) unAuthorized,
+  }) {
+    return applyUpdate(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(TodoAddEvent value)? addTodo,
+    TResult Function(TodoUpdateEvent value)? updateTodo,
+    TResult Function(TodoDeleteEvent value)? deleteTodo,
+    TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
+    TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
+  }) {
+    return applyUpdate?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(TodoAddEvent value)? addTodo,
+    TResult Function(TodoUpdateEvent value)? updateTodo,
+    TResult Function(TodoDeleteEvent value)? deleteTodo,
+    TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
+    TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
+    required TResult orElse(),
+  }) {
+    if (applyUpdate != null) {
+      return applyUpdate(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class TodoApplyUpdateEvent implements TodoEvent {
+  const factory TodoApplyUpdateEvent(
+      {required List<Todo> todos, String? error}) = _$TodoApplyUpdateEvent;
+
+  List<Todo> get todos;
+  String? get error;
+  @JsonKey(ignore: true)
+  $TodoApplyUpdateEventCopyWith<TodoApplyUpdateEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -785,12 +1043,20 @@ class _$TodoUnAuthorizedEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TodoUnAuthorizedEvent implements TodoUnAuthorizedEvent {
+class _$TodoUnAuthorizedEvent
+    with DiagnosticableTreeMixin
+    implements TodoUnAuthorizedEvent {
   const _$TodoUnAuthorizedEvent();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'TodoEvent.unAuthorized()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties..add(DiagnosticsProperty('type', 'TodoEvent.unAuthorized'));
   }
 
   @override
@@ -809,6 +1075,7 @@ class _$TodoUnAuthorizedEvent implements TodoUnAuthorizedEvent {
     required TResult Function(Todo todo, int index) updateTodo,
     required TResult Function(String id, int index) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
+    required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
   }) {
     return unAuthorized();
@@ -821,6 +1088,7 @@ class _$TodoUnAuthorizedEvent implements TodoUnAuthorizedEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
   }) {
     return unAuthorized?.call();
@@ -833,6 +1101,7 @@ class _$TodoUnAuthorizedEvent implements TodoUnAuthorizedEvent {
     TResult Function(Todo todo, int index)? updateTodo,
     TResult Function(String id, int index)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
+    TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
     required TResult orElse(),
   }) {
@@ -849,6 +1118,7 @@ class _$TodoUnAuthorizedEvent implements TodoUnAuthorizedEvent {
     required TResult Function(TodoUpdateEvent value) updateTodo,
     required TResult Function(TodoDeleteEvent value) deleteTodo,
     required TResult Function(TodoGetEvent value) getTodos,
+    required TResult Function(TodoApplyUpdateEvent value) applyUpdate,
     required TResult Function(TodoUnAuthorizedEvent value) unAuthorized,
   }) {
     return unAuthorized(this);
@@ -861,6 +1131,7 @@ class _$TodoUnAuthorizedEvent implements TodoUnAuthorizedEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
   }) {
     return unAuthorized?.call(this);
@@ -873,6 +1144,7 @@ class _$TodoUnAuthorizedEvent implements TodoUnAuthorizedEvent {
     TResult Function(TodoUpdateEvent value)? updateTodo,
     TResult Function(TodoDeleteEvent value)? deleteTodo,
     TResult Function(TodoGetEvent value)? getTodos,
+    TResult Function(TodoApplyUpdateEvent value)? applyUpdate,
     TResult Function(TodoUnAuthorizedEvent value)? unAuthorized,
     required TResult orElse(),
   }) {

@@ -51,7 +51,7 @@ class _LoginViewState extends State<LoginView>
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is AuthRefreshingToken) {
+        if (state is AuthRefreshingToken || state is AuthLoggedIn) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );

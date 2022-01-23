@@ -43,7 +43,9 @@ class AuthenticationRepository {
           auth0RedirectUri,
           issuer: auth0Issuer,
           refreshToken: storedRefreshToken,
-          additionalParameters: {'audience': 'http://localhost:5000'},
+          scopes: <String>['openid', 'profile', 'offline_access'],
+
+          // additionalParameters: {'audience': 'http://localhost:5000'},
         ),
       );
       if (response != null &&
@@ -104,7 +106,7 @@ class AuthenticationRepository {
         AuthorizationTokenRequest(
           auth0ClientId,
           auth0RedirectUri,
-          issuer: 'https://$auth0Domain',
+          issuer: auth0Issuer,
           scopes: <String>['openid', 'profile', 'offline_access'],
           additionalParameters: {'audience': 'http://localhost:5000'},
         ),
