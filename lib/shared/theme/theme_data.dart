@@ -41,7 +41,9 @@ ThemeData themeData(BuildContext context) => ThemeData(
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: createMaterialColor(kSecondaryColor4),
         selectedItemColor: createMaterialColor(kSecondaryColor),
-        unselectedItemColor: createMaterialColor(kSecondaryColor),
+        unselectedItemColor: createMaterialColor(kSecondaryColor3),
+        selectedIconTheme: const IconThemeData(size: 30),
+        unselectedIconTheme: const IconThemeData(size: 30),
       ),
       textTheme: const TextTheme(
         headline4: TextStyle(

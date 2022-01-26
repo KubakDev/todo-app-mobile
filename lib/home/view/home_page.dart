@@ -10,6 +10,7 @@ import 'package:todo_app/app/bloc/auth_bloc.dart';
 import 'package:todo_app/app/bloc/todo_bloc.dart';
 import 'package:todo_app/home/home.dart';
 import 'package:todo_app/shared/shared.dart';
+import 'package:todo_app/shared/widgets/u_nav_bar/u_navi_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -153,19 +154,41 @@ class HomeViewState extends State<HomeView> {
             const SizedBox(width: 8),
           ],
         ),
-        // bottomNavigationBar with 3 buttons (Home, Profile, Favourites)
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
+        bottomNavigationBar: SafeArea(
+          child: Container(
+            margin:
+                const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 8),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(26),
+              child: UNaviBar(
+                items: [
+                  UNaviBarItem(
+                    context,
+                    icon: const Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  UNaviBarItem(
+                    context,
+                    icon: const Icon(Icons.account_circle_rounded),
+                    label: 'Profile',
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle_rounded),
-              label: 'Profile',
-            ),
-          ],
+          ),
         ),
+        // BottomNavigationBar(
+        //   items: const [
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.home),
+        //       label: 'Home',
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.account_circle_rounded),
+        //       label: 'Profile',
+        //     ),
+        //   ],
+        // ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             todoBloc.add(

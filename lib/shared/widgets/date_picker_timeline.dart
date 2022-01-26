@@ -116,7 +116,7 @@ class _DatePickerTimelineState extends State<DatePickerTimeline> {
                       changeMonth(-1);
                     });
                   },
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
                 ),
                 Text(
                   formatMonth(_selectedMonth),
@@ -128,7 +128,7 @@ class _DatePickerTimelineState extends State<DatePickerTimeline> {
                       changeMonth(1);
                     });
                   },
-                  icon: const Icon(Icons.arrow_forward),
+                  icon: const Icon(Icons.arrow_forward_ios_rounded),
                 ),
               ],
             ),
