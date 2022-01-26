@@ -63,4 +63,4 @@ flutter:
           weight: 300
     - family: Baloo
       fonts:
-        - asset: assets/fonts/Baloo/Baloo-Regular.ttf
+        - asset: assets/fonts/baloo/Baloo-Regular.ttf
