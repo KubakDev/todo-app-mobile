@@ -1,11 +1,14 @@
 import 'package:database_repository/database_repository.dart';
+import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:humanizer/humanizer.dart';
+import 'package:menu_button/menu_button.dart';
 import 'package:todo_app/app/bloc/auth_bloc.dart';
 import 'package:todo_app/app/bloc/todo_bloc.dart';
+import 'package:todo_app/home/home.dart';
 import 'package:todo_app/shared/shared.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,7 +16,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const HomeView();
+    return BlocProvider(
+      create: (context) => HomeBloc(context.read<TodoBloc>())
+        ..add(const HomeEvent.requestStream())
+        ..add(const HomeEvent.refresh()),
+      child: const HomeView(),
+    );
   }
 }
 
@@ -30,26 +38,17 @@ class HomeViewState extends State<HomeView> {
   @override
   void initState() {
     _advancedDrawerController = AdvancedDrawerController();
-    context.read<TodoBloc>().add(
-          TodoGetEvent(
-            DateTime.now().add(const Duration(days: -50)),
-            DateTime.now().add(const Duration(days: 50)),
-          ),
-        );
-
     super.initState();
   }
 
   void _handleMenuButtonPressed() {
-    // NOTICE: Manage Advanced Drawer state through the Controller.
-    // _advancedDrawerController.value = AdvancedDrawerValue.visible();
     _advancedDrawerController.showDrawer();
   }
 
   @override
   Widget build(BuildContext context) {
+    final homeBloc = context.read<HomeBloc>();
     final todoBloc = context.read<TodoBloc>();
-// ! get the todo from home bloc not directly from todo bloc
     final auth = context.read<AuthBloc>();
     final authState = auth.state as AuthLoggedIn;
     final theme = Theme.of(context);
@@ -60,14 +59,6 @@ class HomeViewState extends State<HomeView> {
       animationCurve: Curves.easeInOut,
       animationDuration: const Duration(milliseconds: 300),
       childDecoration: const BoxDecoration(
-        // NOTICE: Uncomment if you want to add shadow behind the page.
-        // Keep in mind that it may cause animation jerks.
-        // boxShadow: <BoxShadow>[
-        //   BoxShadow(
-        //     color: Colors.black12,
-        //     blurRadius: 0.0,
-        //   ),
-        // ],
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       drawer: SafeArea(
@@ -174,14 +165,17 @@ class HomeViewState extends State<HomeView> {
               label: 'Profile',
             ),
           ],
-          selectedItemColor: Colors.amber[800],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             todoBloc.add(
-              TodoGetEvent(
-                DateTime.now().add(const Duration(days: -50)),
-                DateTime.now().add(const Duration(days: 50)),
+              TodoAddEvent(
+                Todo(
+                  date: DateTime.now(),
+                  title: 'New Todo ${DateTime.now().millisecondsSinceEpoch}',
+                  note: 'How you doing?',
+                  isComplete: false,
+                ),
               ),
             );
           },
@@ -189,214 +183,304 @@ class HomeViewState extends State<HomeView> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: SafeArea(
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'Hello, ${authState.user.name}',
-                    style: Theme.of(context).textTheme.headline4,
-                    textAlign: TextAlign.left,
+          child: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              return DeclarativeRefreshIndicator(
+                refreshing: state.isLoading,
+                displacement: 20,
+                onRefresh: () async {
+                  homeBloc.add(const HomeEvent.refresh());
+                },
+                child: CustomScrollView(
+                  physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
                   ),
-                ),
-              ),
-              const DatePickerTimeline(),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    "today's tasks",
-                    style: theme.textTheme.headline5,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: BlocBuilder<TodoBloc, TodoState>(
-                  builder: (context, state) {
-                    if (state is TodoLoaded) {
-                      return ListView.builder(
-                        itemCount: state.todos.length,
-                        itemBuilder: (_, index) {
-                          final todo = state.todos[index];
-                          return CheckboxListTile(
-                            value: todo.isComplete,
-                            title: Text(todo.title ?? ''),
-                            onChanged: (value) {
-                              context.read<TodoBloc>().add(
-                                    TodoUpdateEvent(
-                                      todo.copyWith(
-                                        isComplete: value,
-                                      ),
-                                      index,
-                                    ),
+                  slivers: [
+                    SliverAppBar(
+                      // pinned: true,
+                      snap: true,
+                      floating: true,
+                      expandedHeight: 250,
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: Container(
+                          color: theme.scaffoldBackgroundColor,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                  child: Text(
+                                    'Hello, ${authState.user.name}',
+                                    style:
+                                        Theme.of(context).textTheme.headline4,
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ),
+                              DatePickerTimeline(
+                                daysWithTodo: state.datesWithTodos,
+                                onChanged: (DateTime selectedDate) {
+                                  homeBloc.add(
+                                    HomeEvent.setSelectedDate(selectedDate),
                                   );
-                            },
-                          );
-                        },
-                      );
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class DatePickerTimeline extends StatefulWidget {
-  const DatePickerTimeline({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<DatePickerTimeline> createState() => _DatePickerTimelineState();
-}
-
-class _DatePickerTimelineState extends State<DatePickerTimeline> {
-  DateTime _selectedValue = DateTime.now();
-  late int _selectedIndex;
-  late int _todaysIndex;
-  int days = 500;
-  late AutoScrollController _scrollController;
-  final DateFormat dayName = DateFormat('EEE');
-  late DateTime _beginDate;
-  late DateTime _today;
-  @override
-  void initState() {
-    _today = DateTime.now();
-    const i = 20;
-    _beginDate = _today.add(const Duration(days: -i));
-    _scrollController = AutoScrollController(
-      initialScrollOffset: 1700,
-    );
-    _selectedIndex = selectedToIndex();
-    _todaysIndex = i;
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _scrollController.scrollToIndex(
-        i - 1,
-        preferPosition: AutoScrollPosition.begin,
-        duration: const Duration(milliseconds: 500),
-      );
-    });
-    super.initState();
-  }
-
-  int selectedToIndex() {
-    return _selectedValue.difference(_beginDate).inDays + 1;
-  }
-
-  String formatDate(DateTime date) {
-    return DateFormat('dd MMM yyyy').format(date);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final theme = Theme.of(context);
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        color: kPrimaryColor5,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      height: 200,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(16),
-        ),
-        child: Column(
-          children: [
-            Text(
-              formatDate(_selectedValue),
-              style: theme.textTheme.headline5,
-            ),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: days,
-                padding: const EdgeInsets.only(right: 8),
-                controller: _scrollController,
-                itemBuilder: (_, i) {
-                  final add = _beginDate.add(Duration(days: i));
-                  return AutoScrollTag(
-                    key: ValueKey(i),
-                    controller: _scrollController,
-                    index: i,
-                    highlightColor: Colors.black.withOpacity(0.1),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          _selectedValue = add;
-                          _selectedIndex = i;
-                        });
-                      },
-                      child: AnimatedContainer(
-                        padding: const EdgeInsets.all(8),
-                        margin: const EdgeInsets.only(
-                          left: 8,
-                          top: 8,
-                          bottom: 8,
+                                },
+                                selectedDate: state.selectedDate,
+                              ),
+                            ],
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          color: _selectedIndex == i
-                              ? kPrimaryColor
-                              : kPrimaryColor4,
-                          borderRadius: BorderRadius.circular(40),
-                          border: _selectedIndex != i
-                              ? Border.all(
-                                  color: _todaysIndex == i
-                                      ? kPrimaryColor2
-                                      : kPrimaryColor4,
-                                  width: 2,
-                                )
-                              : null,
-                        ),
-                        width: size.width / 4.7,
-                        duration: const Duration(milliseconds: 200),
+                      ),
+                    ),
+                    SliverStickyHeader(
+                      header: Container(
+                        color: theme.scaffoldBackgroundColor,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              '${add.day}',
-                              style: TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
-                                color: _selectedIndex == i
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 250),
+                              child: state.error != null
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.red[50],
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(16),
+                                        ),
+                                      ),
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.all(16),
+                                      margin: const EdgeInsets.only(
+                                        right: 8,
+                                        top: 8,
+                                        left: 8,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.error_outline,
+                                            color: Colors.red,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            state.error!,
+                                            maxLines: 5,
+                                            style: const TextStyle(
+                                              fontFamily: '',
+                                              color: Colors.red,
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : const SizedBox(),
                             ),
-                            Text(
-                              dayName.format(add),
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: _selectedIndex == i
-                                    ? Colors.white
-                                    : Colors.black,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.all(8).copyWith(left: 16),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 310,
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        getTime(state.selectedDate),
+                                        style: theme.textTheme.headline5,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  MenuButton<TodoFilter>(
+                                    items: const [
+                                      TodoFilter.all,
+                                      TodoFilter.active,
+                                      TodoFilter.completed,
+                                    ],
+                                    itemBuilder: (TodoFilter value) => SizedBox(
+                                      width: 50,
+                                      height: 40,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 16,
+                                          right: 11,
+                                        ),
+                                        child: FilterIcon(
+                                          filter: value,
+                                        ),
+                                      ),
+                                    ),
+                                    toggledChild: SizedBox(
+                                      width: 50,
+                                      height: 40,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 16,
+                                          right: 11,
+                                        ),
+                                        child: FilterIcon(
+                                          filter: state.filter,
+                                        ),
+                                      ),
+                                    ),
+                                    onItemSelected: (TodoFilter value) {
+                                      homeBloc
+                                          .add(HomeEvent.changeFilter(value));
+                                    },
+                                    selectedItem: state.filter,
+                                    child: SizedBox(
+                                      width: 50,
+                                      height: 40,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 16,
+                                          right: 11,
+                                        ),
+                                        child: FilterIcon(
+                                          filter: state.filter,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (_, index) {
+                            final todo = state.todos[index];
+                            final _inDeleteQueue =
+                                state.toBeDeletedTodos.contains(todo);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 4,
+                                horizontal: 8,
+                              ),
+                              child: Dismissible(
+                                confirmDismiss: (direction) async {
+                                  homeBloc.add(
+                                    HomeEvent.deleteTodo(todo),
+                                  );
+                                  return false;
+                                },
+                                key: Key(todo.id!),
+                                onDismissed: (_) {},
+                                child: InkWell(
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(16),
+                                  ),
+                                  onTap: () {
+                                    todoBloc.add(
+                                      TodoUpdateEvent(
+                                        todo.copyWith(
+                                          isComplete: !todo.isComplete!,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: theme.cardColor,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(16),
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 2,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Transform.translate(
+                                          offset: const Offset(6, 0),
+                                          child: Transform.scale(
+                                            scale: 1.6,
+                                            child: Checkbox(
+                                              shape: const CircleBorder(),
+                                              value: todo.isComplete,
+                                              onChanged: (value) {
+                                                context.read<TodoBloc>().add(
+                                                      TodoUpdateEvent(
+                                                        todo.copyWith(
+                                                          isComplete: value,
+                                                        ),
+                                                      ),
+                                                    );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          todo.title ?? '',
+                                          overflow: TextOverflow.fade,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            decoration: _inDeleteQueue
+                                                ? TextDecoration.lineThrough
+                                                : null,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        if (_inDeleteQueue)
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              elevation: 0,
+                                              shape: const StadiumBorder(),
+                                            ),
+                                            onPressed: () {
+                                              homeBloc.add(
+                                                HomeEvent.undoDeleteTodo(
+                                                  todo,
+                                                ),
+                                              );
+                                            },
+                                            child: const Text('UNDO'),
+                                          ),
+                                        const SizedBox(width: 8),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          childCount: state.todos.length,
+                        ),
+                      ),
                     ),
-                  );
-                },
-              ),
-            ),
-          ],
+                    const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 50,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
+  }
+
+  String getTime(DateTime date) {
+    var now = DateTime.now();
+    now = DateTime(now.year, now.month, now.day);
+    final approximateTime = date.difference(now).toApproximateTime();
+    final s = approximateTime == 'now' ? 'today' : approximateTime;
+    return s == 'today' || s == 'tomorrow'
+        ? "$s's tasks"
+        : date.isAfter(now)
+            ? 'tasks in $s'
+            : 'tasks from $s';
   }
 }
