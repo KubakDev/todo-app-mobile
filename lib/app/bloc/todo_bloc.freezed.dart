@@ -23,17 +23,15 @@ class _$TodoEventTearOff {
     );
   }
 
-  TodoUpdateEvent updateTodo(Todo todo, int index) {
+  TodoUpdateEvent updateTodo(Todo todo) {
     return TodoUpdateEvent(
       todo,
-      index,
     );
   }
 
-  TodoDeleteEvent deleteTodo(String id, int index) {
+  TodoDeleteEvent deleteTodo(String id) {
     return TodoDeleteEvent(
       id,
-      index,
     );
   }
 
@@ -64,8 +62,8 @@ mixin _$TodoEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Todo todo) addTodo,
-    required TResult Function(Todo todo, int index) updateTodo,
-    required TResult Function(String id, int index) deleteTodo,
+    required TResult Function(Todo todo) updateTodo,
+    required TResult Function(String id) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
     required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
@@ -74,8 +72,8 @@ mixin _$TodoEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
@@ -84,8 +82,8 @@ mixin _$TodoEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
@@ -213,8 +211,8 @@ class _$TodoAddEvent with DiagnosticableTreeMixin implements TodoAddEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Todo todo) addTodo,
-    required TResult Function(Todo todo, int index) updateTodo,
-    required TResult Function(String id, int index) deleteTodo,
+    required TResult Function(Todo todo) updateTodo,
+    required TResult Function(String id) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
     required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
@@ -226,8 +224,8 @@ class _$TodoAddEvent with DiagnosticableTreeMixin implements TodoAddEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
@@ -239,8 +237,8 @@ class _$TodoAddEvent with DiagnosticableTreeMixin implements TodoAddEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
@@ -310,7 +308,7 @@ abstract class $TodoUpdateEventCopyWith<$Res> {
   factory $TodoUpdateEventCopyWith(
           TodoUpdateEvent value, $Res Function(TodoUpdateEvent) then) =
       _$TodoUpdateEventCopyWithImpl<$Res>;
-  $Res call({Todo todo, int index});
+  $Res call({Todo todo});
 }
 
 /// @nodoc
@@ -326,17 +324,12 @@ class _$TodoUpdateEventCopyWithImpl<$Res> extends _$TodoEventCopyWithImpl<$Res>
   @override
   $Res call({
     Object? todo = freezed,
-    Object? index = freezed,
   }) {
     return _then(TodoUpdateEvent(
       todo == freezed
           ? _value.todo
           : todo // ignore: cast_nullable_to_non_nullable
               as Todo,
-      index == freezed
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -346,16 +339,14 @@ class _$TodoUpdateEventCopyWithImpl<$Res> extends _$TodoEventCopyWithImpl<$Res>
 class _$TodoUpdateEvent
     with DiagnosticableTreeMixin
     implements TodoUpdateEvent {
-  const _$TodoUpdateEvent(this.todo, this.index);
+  const _$TodoUpdateEvent(this.todo);
 
   @override
   final Todo todo;
-  @override
-  final int index;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoEvent.updateTodo(todo: $todo, index: $index)';
+    return 'TodoEvent.updateTodo(todo: $todo)';
   }
 
   @override
@@ -363,8 +354,7 @@ class _$TodoUpdateEvent
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'TodoEvent.updateTodo'))
-      ..add(DiagnosticsProperty('todo', todo))
-      ..add(DiagnosticsProperty('index', index));
+      ..add(DiagnosticsProperty('todo', todo));
   }
 
   @override
@@ -372,15 +362,12 @@ class _$TodoUpdateEvent
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is TodoUpdateEvent &&
-            const DeepCollectionEquality().equals(other.todo, todo) &&
-            const DeepCollectionEquality().equals(other.index, index));
+            const DeepCollectionEquality().equals(other.todo, todo));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(todo),
-      const DeepCollectionEquality().hash(index));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(todo));
 
   @JsonKey(ignore: true)
   @override
@@ -391,41 +378,41 @@ class _$TodoUpdateEvent
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Todo todo) addTodo,
-    required TResult Function(Todo todo, int index) updateTodo,
-    required TResult Function(String id, int index) deleteTodo,
+    required TResult Function(Todo todo) updateTodo,
+    required TResult Function(String id) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
     required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
   }) {
-    return updateTodo(todo, index);
+    return updateTodo(todo);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
   }) {
-    return updateTodo?.call(todo, index);
+    return updateTodo?.call(todo);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
     required TResult orElse(),
   }) {
     if (updateTodo != null) {
-      return updateTodo(todo, index);
+      return updateTodo(todo);
     }
     return orElse();
   }
@@ -475,10 +462,9 @@ class _$TodoUpdateEvent
 }
 
 abstract class TodoUpdateEvent implements TodoEvent {
-  const factory TodoUpdateEvent(Todo todo, int index) = _$TodoUpdateEvent;
+  const factory TodoUpdateEvent(Todo todo) = _$TodoUpdateEvent;
 
   Todo get todo;
-  int get index;
   @JsonKey(ignore: true)
   $TodoUpdateEventCopyWith<TodoUpdateEvent> get copyWith =>
       throw _privateConstructorUsedError;
@@ -489,7 +475,7 @@ abstract class $TodoDeleteEventCopyWith<$Res> {
   factory $TodoDeleteEventCopyWith(
           TodoDeleteEvent value, $Res Function(TodoDeleteEvent) then) =
       _$TodoDeleteEventCopyWithImpl<$Res>;
-  $Res call({String id, int index});
+  $Res call({String id});
 }
 
 /// @nodoc
@@ -505,17 +491,12 @@ class _$TodoDeleteEventCopyWithImpl<$Res> extends _$TodoEventCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? index = freezed,
   }) {
     return _then(TodoDeleteEvent(
       id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      index == freezed
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -525,16 +506,14 @@ class _$TodoDeleteEventCopyWithImpl<$Res> extends _$TodoEventCopyWithImpl<$Res>
 class _$TodoDeleteEvent
     with DiagnosticableTreeMixin
     implements TodoDeleteEvent {
-  const _$TodoDeleteEvent(this.id, this.index);
+  const _$TodoDeleteEvent(this.id);
 
   @override
   final String id;
-  @override
-  final int index;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TodoEvent.deleteTodo(id: $id, index: $index)';
+    return 'TodoEvent.deleteTodo(id: $id)';
   }
 
   @override
@@ -542,8 +521,7 @@ class _$TodoDeleteEvent
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'TodoEvent.deleteTodo'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('index', index));
+      ..add(DiagnosticsProperty('id', id));
   }
 
   @override
@@ -551,15 +529,12 @@ class _$TodoDeleteEvent
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is TodoDeleteEvent &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.index, index));
+            const DeepCollectionEquality().equals(other.id, id));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(index));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(id));
 
   @JsonKey(ignore: true)
   @override
@@ -570,41 +545,41 @@ class _$TodoDeleteEvent
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Todo todo) addTodo,
-    required TResult Function(Todo todo, int index) updateTodo,
-    required TResult Function(String id, int index) deleteTodo,
+    required TResult Function(Todo todo) updateTodo,
+    required TResult Function(String id) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
     required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
   }) {
-    return deleteTodo(id, index);
+    return deleteTodo(id);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
   }) {
-    return deleteTodo?.call(id, index);
+    return deleteTodo?.call(id);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
     required TResult orElse(),
   }) {
     if (deleteTodo != null) {
-      return deleteTodo(id, index);
+      return deleteTodo(id);
     }
     return orElse();
   }
@@ -654,10 +629,9 @@ class _$TodoDeleteEvent
 }
 
 abstract class TodoDeleteEvent implements TodoEvent {
-  const factory TodoDeleteEvent(String id, int index) = _$TodoDeleteEvent;
+  const factory TodoDeleteEvent(String id) = _$TodoDeleteEvent;
 
   String get id;
-  int get index;
   @JsonKey(ignore: true)
   $TodoDeleteEventCopyWith<TodoDeleteEvent> get copyWith =>
       throw _privateConstructorUsedError;
@@ -747,8 +721,8 @@ class _$TodoGetEvent with DiagnosticableTreeMixin implements TodoGetEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Todo todo) addTodo,
-    required TResult Function(Todo todo, int index) updateTodo,
-    required TResult Function(String id, int index) deleteTodo,
+    required TResult Function(Todo todo) updateTodo,
+    required TResult Function(String id) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
     required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
@@ -760,8 +734,8 @@ class _$TodoGetEvent with DiagnosticableTreeMixin implements TodoGetEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
@@ -773,8 +747,8 @@ class _$TodoGetEvent with DiagnosticableTreeMixin implements TodoGetEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
@@ -928,8 +902,8 @@ class _$TodoApplyUpdateEvent
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Todo todo) addTodo,
-    required TResult Function(Todo todo, int index) updateTodo,
-    required TResult Function(String id, int index) deleteTodo,
+    required TResult Function(Todo todo) updateTodo,
+    required TResult Function(String id) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
     required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
@@ -941,8 +915,8 @@ class _$TodoApplyUpdateEvent
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
@@ -954,8 +928,8 @@ class _$TodoApplyUpdateEvent
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
@@ -1072,8 +1046,8 @@ class _$TodoUnAuthorizedEvent
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Todo todo) addTodo,
-    required TResult Function(Todo todo, int index) updateTodo,
-    required TResult Function(String id, int index) deleteTodo,
+    required TResult Function(Todo todo) updateTodo,
+    required TResult Function(String id) deleteTodo,
     required TResult Function(DateTime from, DateTime to) getTodos,
     required TResult Function(List<Todo> todos, String? error) applyUpdate,
     required TResult Function() unAuthorized,
@@ -1085,8 +1059,8 @@ class _$TodoUnAuthorizedEvent
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,
@@ -1098,8 +1072,8 @@ class _$TodoUnAuthorizedEvent
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Todo todo)? addTodo,
-    TResult Function(Todo todo, int index)? updateTodo,
-    TResult Function(String id, int index)? deleteTodo,
+    TResult Function(Todo todo)? updateTodo,
+    TResult Function(String id)? deleteTodo,
     TResult Function(DateTime from, DateTime to)? getTodos,
     TResult Function(List<Todo> todos, String? error)? applyUpdate,
     TResult Function()? unAuthorized,

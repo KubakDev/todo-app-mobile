@@ -26,34 +26,49 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       try {
         final result = await database.createTodo(event.todo);
         emit(TodoLoaded([result, ...state.todos]));
-      } catch (e) {
+      } catch (e, _) {
         emit(TodoError(e.toString(), state.todos));
       }
     });
 
     on<TodoGetEvent>((event, emit) async {
-      emit(TodoLoading(state.todos));
-      final result = await database.getTodos(event.from, event.to);
-      emit(TodoLoaded(result ?? []));
-      // try {
-      //   emit(TodoLoading(state.todos));
-      //   final result = await database.getTodos(event.from, event.to);
-      //   emit(TodoLoaded(result ?? []));
-      // } catch (e) {
-      //   emit(TodoError(e.toString(), state.todos));
-      // }
+      try {
+        emit(TodoLoading(state.todos));
+        final result = await database.getTodos(event.from, event.to);
+        emit(TodoLoaded(result ?? []));
+      } catch (e) {
+        emit(TodoError(e.toString(), state.todos));
+      }
     });
 
     on<TodoUpdateEvent>(
-      _onTodoUpdate,
+      (event, emit) async {
+        final oldTodo =
+            state.todos.firstWhere((todo) => todo.id == event.todo.id);
+        final index = state.todos.indexOf(oldTodo);
+        var todos = List<Todo>.from(state.todos)..[index] = event.todo;
+        emit(TodoLoaded(todos));
+        EasyDebounce.debounce(
+            'todo_${event.todo.id}', todoUpdateDebounceDuration, () async {
+          try {
+            final result = await database.updateTodo(event.todo);
+            todos = List<Todo>.from(state.todos)..[index] = result;
+            add(TodoApplyUpdateEvent(todos: todos));
+          } catch (e, _) {
+            todos = List<Todo>.from(state.todos)..[index] = oldTodo;
+            add(TodoApplyUpdateEvent(todos: todos, error: e.toString()));
+          }
+        });
+      },
     );
 
     on<TodoDeleteEvent>((event, emit) async {
       try {
         await database.deleteTodo(event.id);
-        final todos = List<Todo>.from(state.todos)..removeAt(event.index);
+        final todos = List<Todo>.from(state.todos)
+          ..removeWhere((todo) => todo.id == event.id);
         emit(TodoLoaded(todos));
-      } catch (e) {
+      } catch (e, _) {
         emit(TodoError(e.toString(), state.todos));
       }
     });
@@ -67,26 +82,6 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     });
     on<TodoUnAuthorizedEvent>((event, emit) async {
       authBloc.add(const AuthEventRefreshToken());
-    });
-  }
-
-  FutureOr<void> _onTodoUpdate(
-    TodoUpdateEvent event,
-    Emitter<TodoState> emit,
-  ) async {
-    final oldTodo = state.todos.firstWhere((todo) => todo.id == event.todo.id);
-    final todos = List<Todo>.from(state.todos)..[event.index] = event.todo;
-    emit(TodoLoaded(todos));
-    EasyDebounce.debounce('todo_${event.todo.id}', todoUpdateDebounceDuration,
-        () async {
-      try {
-        final result = await database.updateTodo(event.todo);
-        final todos = List<Todo>.from(state.todos)..[event.index] = result;
-        add(TodoApplyUpdateEvent(todos: todos));
-      } catch (e) {
-        final todos = List<Todo>.from(state.todos)..[event.index] = oldTodo;
-        add(TodoApplyUpdateEvent(todos: todos, error: e.toString()));
-      }
     });
   }
 
