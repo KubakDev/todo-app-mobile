@@ -12,41 +12,38 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(this.authRepo) : super(const AuthNotLoggedIn()) {
     authRepo.initAction();
     authStatus = authRepo.status.listen((event) {
-      if (event is AuthStateloading) {
-        add(const AuthEvent.loading());
-      } else if (event is AuthStatehasError) {
-        add(AuthEvent.error(event.error));
-      } else if (event is AuthStateloggedIn) {
-        add(AuthEvent.loggedIn(event.user));
-      } else if (event is AuthStateloggedOut) {
-        add(const AuthEvent.loggedOut());
-      } else if (event is AuthStateloadingstored) {
-        add(const AuthEvent.loadingstored());
+      add(AuthRepoStateChanged(event));
+    });
+
+    on<AuthLogin>((_, __) => authRepo.loginAction());
+    on<AuthLogout>((_, __) => authRepo.logoutAction());
+    on<AuthEventRefreshToken>((_, __) => authRepo.initAction());
+    on<AuthRepoStateChanged>((event, emit) {
+      final authS = event.authRepoState;
+      if (authS is AuthRepoloading) {
+        emit(const AuthLoading());
+      } else if (authS is AuthRepohasError) {
+        emit(AuthError(authS.error));
+      } else if (authS is AuthRepologgedIn) {
+        emit(
+          AuthLoggedIn(authS.user),
+        );
+      } else if (authS is AuthRepologgedOut) {
+        emit(const AuthNotLoggedIn());
+      } else if (authS is AuthRepoRefreshingToken) {
+        emit(const AuthRefreshingToken());
       }
     });
-    on<AuthLogin>((event, emit) {
-      authRepo.loginAction();
-    });
-    on<AuthLogout>((event, emit) => authRepo.logoutAction());
-    on<AuthEventError>((event, emit) => emit(AuthError(event.error)));
-    on<AuthEventLoading>((event, emit) => emit(const AuthState.loading()));
-    on<AuthEventLoggedIn>((event, emit) {
-      emit(AuthState.loggedIn(event.user));
-    });
-    on<AuthEventLoggedOut>((event, emit) {
-      emit(const AuthState.notLoggedIn());
-    });
-    on<AuthEventLoadingStored>((event, emit) {
-      emit(const AuthState.loadingstored());
-    });
   }
+
   final AuthenticationRepository authRepo;
   late final StreamSubscription authStatus;
 
-  bool get isLoggedIn => state is AuthLoggedIn;
   @override
   Future<void> close() {
     authStatus.cancel();
     return super.close();
   }
+
+  bool get isLoggedIn => state is AuthLoggedIn;
 }

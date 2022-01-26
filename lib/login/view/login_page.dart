@@ -51,7 +51,7 @@ class _LoginViewState extends State<LoginView>
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is AuthLoadingStored) {
+        if (state is AuthRefreshingToken || state is AuthLoggedIn) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
@@ -109,7 +109,7 @@ class _LoginViewState extends State<LoginView>
                           ),
                         ),
                       ),
-                      const Expanded(flex: 2, child: SizedBox.expand()),
+                      const Expanded(child: SizedBox.expand()),
                       Expanded(
                         flex: 6,
                         child: FittedBox(
@@ -139,7 +139,7 @@ your important tasks''',
                           ),
                         ),
                       ),
-                      const Expanded(flex: 3, child: SizedBox.expand()),
+                      const Expanded(child: SizedBox.expand()),
                       Center(
                         child: DecoratedBox(
                           decoration: BoxDecoration(
@@ -170,7 +170,8 @@ your important tasks''',
                               width: size.width * 0.65,
                               height: 55,
                               child: Center(
-                                child: state is AuthLoading
+                                child: state is AuthLoading ||
+                                        state is AuthLoggedIn
                                     ? const CircularProgressIndicator(
                                         color: Colors.white,
                                       )
@@ -200,7 +201,7 @@ your important tasks''',
                             ),
                           ),
                         ),
-                      const Expanded(flex: 2, child: SizedBox.expand()),
+                      const Expanded(child: SizedBox.expand()),
                     ],
                   ),
                 ),

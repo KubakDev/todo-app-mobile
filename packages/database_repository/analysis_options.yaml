@@ -1,0 +1,13 @@
+include: package:very_good_analysis/analysis_options.2.4.0.yaml
+linter:
+  rules:
+    public_member_api_docs: false
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.swagger.dart"
+    - "**/*.swagger.g.dart"
+    - "**/*.swagger.chopper.dart"
+  errors:
+    invalid_annotation_target: ignore

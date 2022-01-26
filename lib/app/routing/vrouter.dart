@@ -1,4 +1,8 @@
+import 'package:database_repository/database_repository.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/app/bloc/auth_bloc.dart';
+import 'package:todo_app/app/bloc/todo_bloc.dart';
 import 'package:todo_app/home/view/home_page.dart';
 import 'package:todo_app/login/login.dart';
 import 'package:vrouter/vrouter.dart';
@@ -29,7 +33,25 @@ List<VRouteElement> generateRoutes(AuthBloc authBloc) {
         }
       },
       stackedRoutes: [
-        VWidget(path: homePath, widget: const HomePage()),
+        VNester(
+          path: '/',
+          widgetBuilder: (child) {
+            return Builder(
+              builder: (context) {
+                return BlocProvider(
+                  create: (context) => TodoBloc(
+                    context.read<DatabaseRepository>(),
+                    context.read<AuthBloc>(),
+                  ),
+                  child: child,
+                );
+              },
+            );
+          },
+          nestedRoutes: [
+            VWidget(path: homePath, widget: const HomePage()),
+          ],
+        ),
       ],
     ),
     VRouteRedirector(path: ':_(.+)', redirectTo: homePath)

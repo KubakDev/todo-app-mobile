@@ -10,17 +10,32 @@ dependencies:
   authentication_repository:
     path: packages/authentication_repository
   bloc: ^8.0.2
+  bloc_concurrency: ^0.2.0
+  database_repository:
+    path: packages/database_repository
+  declarative_refresh_indicator: ^0.1.0
+  easy_debounce: ^2.0.2+1
+  equatable: ^2.0.3
   flutter:
     sdk: flutter
+  flutter_advanced_drawer: ^1.3.0
   flutter_bloc: ^8.0.1
+  flutter_sticky_header: ^0.6.0
   flutter_svg: ^1.0.1
   freezed_annotation: ^1.1.0
+  hive: ^2.0.5
+  hive_flutter: ^1.1.0
+  humanizer: ^1.0.0
   intl: ^0.17.0
+  menu_button: ^1.4.2+1
   rubber:
     git:
       url: https://github.com/ArinFaraj/rubber.git
+  rxdart: ^0.27.3
+  scroll_to_index: ^2.1.1
+  shared_preferences: ^2.0.12
   sliding_up_panel: ^2.0.0+1
-  vrouter: ^1.2.0+17
+  vrouter: ^1.2.0+18
 
 dev_dependencies:
   bloc_test: ^9.0.2
@@ -29,6 +44,7 @@ dev_dependencies:
     sdk: flutter
   freezed: ^1.1.0
   mocktail: ^0.2.0
+  mocktail_image_network: ^0.2.0
   very_good_analysis: ^2.4.0
 
 flutter:
@@ -45,3 +61,6 @@ flutter:
           weight: 500
         - asset: assets/fonts/Rabar/Rabar_022.ttf
           weight: 300
+    - family: Baloo
+      fonts:
+        - asset: assets/fonts/baloo/Baloo-Regular.ttf
