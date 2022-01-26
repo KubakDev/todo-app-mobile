@@ -36,19 +36,16 @@ List<VRouteElement> generateRoutes(AuthBloc authBloc) {
         VNester(
           path: '/',
           widgetBuilder: (child) {
-            return RepositoryProvider<DatabaseRepository>(
-              create: (context) => DatabaseRepository(),
-              child: Builder(
-                builder: (context) {
-                  return BlocProvider(
-                    create: (context) => TodoBloc(
-                      context.read<DatabaseRepository>(),
-                      context.read<AuthBloc>(),
-                    ),
-                    child: child,
-                  );
-                },
-              ),
+            return Builder(
+              builder: (context) {
+                return BlocProvider(
+                  create: (context) => TodoBloc(
+                    context.read<DatabaseRepository>(),
+                    context.read<AuthBloc>(),
+                  ),
+                  child: child,
+                );
+              },
             );
           },
           nestedRoutes: [

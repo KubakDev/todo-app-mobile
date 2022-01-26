@@ -93,6 +93,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   @override
   Future<void> close() {
     dbStatus.cancel();
+    database.dispose();
     return super.close();
   }
 }

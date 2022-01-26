@@ -1,4 +1,5 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:database_repository/database_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/app/bloc/auth_bloc.dart';
@@ -10,12 +11,17 @@ class App extends StatelessWidget {
   const App({
     Key? key,
     required this.authRepo,
+    required this.databaseRepo,
   }) : super(key: key);
   final AuthenticationRepository authRepo;
+  final DatabaseRepository databaseRepo;
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => authRepo,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (context) => authRepo),
+        RepositoryProvider(create: (context) => databaseRepo),
+      ],
       child: Builder(
         builder: (context) {
           return BlocProvider(

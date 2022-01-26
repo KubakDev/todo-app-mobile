@@ -541,6 +541,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+  mocktail_image_network:
+    dependency: "direct dev"
+    description:
+      name: mocktail_image_network
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   move_to_background:
     dependency: transitive
     description:

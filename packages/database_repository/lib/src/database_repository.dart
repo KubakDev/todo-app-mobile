@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:chopper/chopper.dart';
 import 'package:database_repository/src/swagger_generated_code/swagger.swagger.dart';
 import 'package:hive/hive.dart';
+import 'package:rxdart/rxdart.dart';
 
 const settingsBoxName = 'todo_settings';
 enum Status {
@@ -17,7 +18,7 @@ class DatabaseRepository {
         Swagger.create(),
       ],
       converter: $JsonSerializableConverter(),
-      baseUrl: 'https://kubak-todo.loca.lt',
+      baseUrl: 'https://big-elephant-53.loca.lt/',
       interceptors: <dynamic>[
         (Request request) => applyHeader(
               request,
@@ -33,16 +34,17 @@ class DatabaseRepository {
         },
       ],
     );
-
-    // chopper client with authorization token
   }
+
   final box = Hive.box<dynamic>(settingsBoxName);
   late final ChopperClient chopperClient;
-  final _controller = StreamController<Status>();
+  final _controller = BehaviorSubject<Status>();
 
   Stream<Status> get status async* {
-    yield* _controller.stream;
+    yield* _controller.asBroadcastStream();
   }
+
+  void dispose() => _controller.close();
 
   Future<List<Todo>?> getTodos(DateTime from, DateTime to) async {
     final todosService = chopperClient.getService<Swagger>();
