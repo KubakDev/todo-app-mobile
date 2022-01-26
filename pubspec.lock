@@ -225,6 +225,20 @@ packages:
       relative: true
     source: path
     version: "0.0.0"
+  decimal:
+    dependency: transitive
+    description:
+      name: decimal
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.0"
+  declarative_refresh_indicator:
+    dependency: "direct main"
+    description:
+      name: declarative_refresh_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   diff_match_patch:
     dependency: transitive
     description:
@@ -356,6 +370,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.2"
+  flutter_sticky_header:
+    dependency: "direct main"
+    description:
+      name: flutter_sticky_header
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -443,6 +464,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  humanizer:
+    dependency: "direct main"
+    description:
+      name: humanizer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   intl:
     dependency: "direct main"
     description:
@@ -485,6 +513,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.11"
+  menu_button:
+    dependency: "direct main"
+    description:
+      name: menu_button
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.2+1"
   meta:
     dependency: transitive
     description:
@@ -674,6 +709,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  rational:
+    dependency: transitive
+    description:
+      name: rational
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
   rubber:
     dependency: "direct main"
     description:
@@ -954,6 +996,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+  value_layout_builder:
+    dependency: transitive
+    description:
+      name: value_layout_builder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.1"
   vector_math:
     dependency: transitive
     description:
