@@ -93,12 +93,12 @@ android {
         staging {
             dimension "default"
             applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "[STG] Todo App"]
+            manifestPlaceholders = [appName: "Todo App [STG]"]
         }        
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "[DEV] Todo App"]
+            manifestPlaceholders = [appName: "Todo App [DEV]"]
         }
     }
 
