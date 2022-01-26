@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
 import 'package:database_repository/src/swagger_generated_code/swagger.swagger.dart';
@@ -16,7 +17,7 @@ class DatabaseRepository {
         Swagger.create(),
       ],
       converter: $JsonSerializableConverter(),
-      baseUrl: 'http://82ca-62-201-232-11.ngrok.io',
+      baseUrl: 'https://kubak-todo.loca.lt',
       interceptors: <dynamic>[
         (Request request) => applyHeader(
               request,
@@ -56,7 +57,7 @@ class DatabaseRepository {
     if (res.isSuccessful) {
       return res.body;
     } else {
-      throw Exception(res.error);
+      throw Exception(_extractTitleFromError(res.error));
     }
   }
 
@@ -75,8 +76,16 @@ class DatabaseRepository {
     if (res.isSuccessful) {
       return res.body!;
     } else {
-      throw Exception(res.body);
+      throw Exception(_extractTitleFromError(res.error));
     }
+  }
+
+  String _extractTitleFromError(Object? error) {
+    if (error != null) {
+      return (jsonDecode(error as String) as Map<String, dynamic>)['title']
+          as String;
+    }
+    return 'unknown error';
   }
 
   Future<bool> deleteTodo(String id) async {
@@ -87,7 +96,7 @@ class DatabaseRepository {
     if (res.isSuccessful) {
       return true;
     } else {
-      throw Exception(res.body);
+      throw Exception(_extractTitleFromError(res.error));
     }
   }
 
@@ -107,7 +116,7 @@ class DatabaseRepository {
     if (res.isSuccessful) {
       return res.body!;
     } else {
-      throw Exception(res.body);
+      throw Exception(_extractTitleFromError(res.error));
     }
   }
 }
