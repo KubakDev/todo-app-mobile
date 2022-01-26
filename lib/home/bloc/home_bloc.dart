@@ -5,13 +5,24 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:todo_app/app/bloc/todo_bloc.dart';
+import 'package:todo_app/shared/helpers/date_time_helper.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 part 'home_bloc.freezed.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc(this.todoBloc) : super(HomeState(selectedDate: DateTime.now())) {
+  HomeBloc(this.todoBloc)
+      : super(
+          HomeState(
+            selectedDate: DateTime.now().copyWith(
+              hour: 0,
+              minute: 0,
+              second: 0,
+              millisecond: 0,
+            ),
+          ),
+        ) {
     on<_RequestStream>(_onRequestStream);
     on<_Refresh>((event, emit) async {
       final dates = getDatesMonthRange(state.selectedDate);
