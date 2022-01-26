@@ -10,7 +10,6 @@ import 'package:todo_app/app/bloc/auth_bloc.dart';
 import 'package:todo_app/app/bloc/todo_bloc.dart';
 import 'package:todo_app/home/home.dart';
 import 'package:todo_app/shared/shared.dart';
-import 'package:todo_app/shared/widgets/u_nav_bar/u_navi_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
