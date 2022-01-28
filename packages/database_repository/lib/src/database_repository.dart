@@ -19,7 +19,7 @@ class DatabaseRepository {
         Swagger.create(),
       ],
       converter: $JsonSerializableConverter(),
-      baseUrl: 'https://big-elephant-53.loca.lt/',
+      baseUrl: 'https://kubak-todo.loca.lt',
       interceptors: <dynamic>[
         (Request request) => applyHeader(
               request,
@@ -66,6 +66,7 @@ class DatabaseRepository {
 
   Future<Todo> createTodo(Todo todo) async {
     final todosService = chopperClient.getService<Swagger>();
+    log('creating a todo ${todo.date!.toIso8601String()}');
 
     final res = await todosService.todosPost(
       body: CreateTodo(
@@ -77,8 +78,10 @@ class DatabaseRepository {
     );
 
     if (res.isSuccessful) {
+      log('ceated a todo');
       return res.body!;
     } else {
+      log('creating todo failed');
       throw Exception(_extractTitleFromError(res.error));
     }
   }
@@ -105,6 +108,7 @@ class DatabaseRepository {
 
   Future<Todo> updateTodo(Todo todo) async {
     final todosService = chopperClient.getService<Swagger>();
+    log('updating a todo');
 
     final res = await todosService.todosIdPut(
       id: todo.id,
@@ -117,11 +121,14 @@ class DatabaseRepository {
     );
 
     if (res.isSuccessful) {
+      log('updated a todo');
       return res.body!;
     } else {
+      log('update failed');
       throw Exception(_extractTitleFromError(res.error));
     }
   }
+
   Future<Todo> getTodo(String id) async {
     final todosService = chopperClient.getService<Swagger>();
     log('getting a todo');

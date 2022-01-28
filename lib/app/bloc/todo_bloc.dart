@@ -25,7 +25,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<TodoAddEvent>((event, emit) async {
       try {
         final result = await database.createTodo(event.todo);
-        emit(TodoLoaded([result, ...state.todos]));
+        emit(TodoLoaded([...state.todos, result]));
       } catch (e, _) {
         emit(TodoError(e.toString(), state.todos));
       }

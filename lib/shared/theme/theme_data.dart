@@ -11,6 +11,31 @@ ThemeData themeData(BuildContext context) => ThemeData(
             ),
       ),
       backgroundColor: Colors.white,
+      inputDecorationTheme: const InputDecorationTheme(
+        fillColor: kPrimaryColor4,
+        filled: true,
+        hintStyle: TextStyle(
+          fontSize: 20,
+          color: kPrimaryColor2,
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+      ),
       fontFamily: 'Baloo',
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         foregroundColor: Colors.white,
@@ -21,9 +46,11 @@ ThemeData themeData(BuildContext context) => ThemeData(
       colorScheme: ColorScheme.fromSwatch(
         accentColor: createMaterialColor(kSecondaryColor),
         primarySwatch: createMaterialColor(kPrimaryColor),
+        backgroundColor: Colors.white,
         cardColor: createMaterialColor(kPrimaryColor4),
       ),
       cardColor: kPrimaryColor4,
+      dividerColor: kPrimaryColor5,
       listTileTheme: ListTileThemeData(
         // dense: true,
         selectedColor: kPrimaryColor,
