@@ -33,98 +33,22 @@ class HomeView extends StatefulWidget {
 }
 
 class HomeViewState extends State<HomeView> {
-  late final AdvancedDrawerController _advancedDrawerController;
-
-  @override
-  void initState() {
-    _advancedDrawerController = AdvancedDrawerController();
-    super.initState();
-  }
-
-  void _handleMenuButtonPressed() {
-    _advancedDrawerController.showDrawer();
-  }
-
   @override
   Widget build(BuildContext context) {
     final homeBloc = context.read<HomeBloc>();
-    final todoBloc = context.read<TodoBloc>();
     final auth = context.read<AuthBloc>();
     final authState = auth.state as AuthLoggedIn;
     final theme = Theme.of(context);
+    final _drawer = context.read<AdvancedDrawerController>();
+
     // final size = MediaQuery.of(context).size;
-    return AdvancedDrawer(
-      backdropColor: kPrimaryColor5,
-      controller: _advancedDrawerController,
-      animationCurve: Curves.easeInOut,
-      animationDuration: const Duration(milliseconds: 300),
-      childDecoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      ),
-      drawer: SafeArea(
-        child: ListTileTheme(
-          textColor: Colors.black,
-          iconColor: Colors.black,
-          child: Column(
-            children: [
-              Container(
-                width: 128,
-                height: 128,
-                margin: const EdgeInsets.only(
-                  top: 24,
-                  bottom: 64,
-                ),
-                clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(
-                  color: Colors.black26,
-                  shape: BoxShape.circle,
-                ),
-                child: const Placeholder(),
-              ),
-              ListTile(
-                onTap: () {},
-                leading: const Icon(Icons.home),
-                title: const Text('Home'),
-              ),
-              ListTile(
-                onTap: () {},
-                leading: const Icon(Icons.account_circle_rounded),
-                title: const Text('Profile'),
-              ),
-              ListTile(
-                onTap: () {},
-                leading: const Icon(Icons.favorite),
-                title: const Text('Favourites'),
-              ),
-              ListTile(
-                onTap: () {},
-                leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
-              ),
-              const Spacer(),
-              DefaultTextStyle(
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.black54,
-                ),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
-                  child: const Text('Terms of Service | Privacy Policy'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      child: Scaffold(
+    return Scaffold(
         appBar: TopBar(
           leadingChildren: [
             IconButton(
-              onPressed: _handleMenuButtonPressed,
+            onPressed: _drawer.showDrawer,
               icon: ValueListenableBuilder<AdvancedDrawerValue>(
-                valueListenable: _advancedDrawerController,
+              valueListenable: _drawer,
                 builder: (_, value, __) {
                   return AnimatedSwitcher(
                     duration: const Duration(milliseconds: 250),
@@ -488,7 +412,6 @@ class HomeViewState extends State<HomeView> {
                 ),
               );
             },
-          ),
         ),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:todo_app/app/bloc/auth_bloc.dart';
 import 'package:todo_app/app/bloc/todo_bloc.dart';
 import 'package:todo_app/home/view/home_page.dart';
 import 'package:todo_app/login/login.dart';
+import 'package:todo_app/shared/widgets/drawer.dart';
 import 'package:vrouter/vrouter.dart';
 
 const loginPath = '/login';
@@ -43,7 +44,7 @@ List<VRouteElement> generateRoutes(AuthBloc authBloc) {
                     context.read<DatabaseRepository>(),
                     context.read<AuthBloc>(),
                   ),
-                  child: child,
+                  child: CustomDrawer(child: child),
                 );
               },
             );
