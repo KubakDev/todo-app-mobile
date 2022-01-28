@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:chopper/chopper.dart';
 import 'package:database_repository/src/swagger_generated_code/swagger.swagger.dart';
@@ -118,6 +119,20 @@ class DatabaseRepository {
     if (res.isSuccessful) {
       return res.body!;
     } else {
+      throw Exception(_extractTitleFromError(res.error));
+    }
+  }
+  Future<Todo> getTodo(String id) async {
+    final todosService = chopperClient.getService<Swagger>();
+    log('getting a todo');
+
+    final res = await todosService.todosIdGet(id: id);
+
+    if (res.isSuccessful) {
+      log('got a todo ${res.body!.date!.toIso8601String()}');
+      return res.body!;
+    } else {
+      log('getting todo failed');
       throw Exception(_extractTitleFromError(res.error));
     }
   }
