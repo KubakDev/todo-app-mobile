@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-import 'package:todo_app/shared/shared.dart';
-
 class DatePickerTimeline extends StatefulWidget {
   const DatePickerTimeline({
     Key? key,
@@ -97,7 +95,7 @@ class _DatePickerTimelineState extends State<DatePickerTimeline> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
-        color: kPrimaryColor5,
+        color: theme.dividerColor,
         borderRadius: BorderRadius.circular(16),
       ),
       height: 200,
@@ -164,14 +162,14 @@ class _DatePickerTimelineState extends State<DatePickerTimeline> {
                             ),
                             decoration: BoxDecoration(
                               color: selectedIndex == i
-                                  ? kPrimaryColor
-                                  : kPrimaryColor4,
+                                  ? theme.colorScheme.primary
+                                  : theme.cardColor,
                               borderRadius: BorderRadius.circular(40),
                               border: selectedIndex != i
                                   ? Border.all(
                                       color: _todaysIndex == i
-                                          ? kPrimaryColor2
-                                          : kPrimaryColor4,
+                                          ? theme.hintColor
+                                          : theme.cardColor,
                                       width: 2,
                                     )
                                   : null,

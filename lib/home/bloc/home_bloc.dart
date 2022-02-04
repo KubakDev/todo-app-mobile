@@ -4,7 +4,7 @@ import 'package:database_repository/database_repository.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:todo_app/app/bloc/todo_bloc.dart';
+import 'package:todo_app/app/bloc/bloc.dart';
 import 'package:todo_app/shared/helpers/date_time_helper.dart';
 
 part 'home_event.dart';

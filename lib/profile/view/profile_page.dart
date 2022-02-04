@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/app/bloc/auth_bloc.dart';
-import 'package:todo_app/app/bloc/todo_bloc.dart';
+import 'package:todo_app/app/bloc/bloc.dart';
 import 'package:todo_app/app/routing/vrouter.dart';
 import 'package:todo_app/shared/shared.dart';
 import 'package:vrouter/vrouter.dart';

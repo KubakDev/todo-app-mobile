@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/app/bloc/auth_bloc.dart';
+import 'package:todo_app/app/bloc/bloc.dart';
 import 'package:todo_app/app/routing/vrouter.dart';
-import 'package:todo_app/shared/shared.dart';
 import 'package:vrouter/vrouter.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -29,8 +28,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     final auth = context.read<AuthBloc>();
     final authState = auth.state as AuthLoggedIn;
+    final theme = Theme.of(context);
     return AdvancedDrawer(
-      backdropColor: kPrimaryColor5,
+      backdropColor: theme.dividerColor,
       controller: _advancedDrawerController,
       animationCurve: Curves.easeInOut,
       animationDuration: const Duration(milliseconds: 300),
@@ -57,7 +57,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 title: const Text('Home'),
               ),
               ListTile(
-                // ignore: unnecessary_lambdas
                 onTap: () {
                   context.vRouter.to(profilePath);
                   _advancedDrawerController.hideDrawer();
@@ -66,8 +65,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 title: const Text('Profile'),
               ),
               ListTile(
-                // ignore: unnecessary_lambdas
                 onTap: () {
+                  context.vRouter.to(settingsPath);
+
                   _advancedDrawerController.hideDrawer();
                 },
                 leading: const Icon(Icons.settings),
