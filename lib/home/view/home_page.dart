@@ -1,5 +1,4 @@
 import 'package:database_repository/database_repository.dart';
-import 'package:declarative_refresh_indicator/declarative_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,6 +85,11 @@ class HomeViewState extends State<HomeView> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(26),
             child: UNaviBar(
+              onTap: (p0) {
+                if (p0 == 1) {
+                  VRouter.of(context).to(profilePath);
+                }
+              },
               items: [
                 UNaviBarItem(
                   context,

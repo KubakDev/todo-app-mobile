@@ -11,7 +11,7 @@ class HomeState with _$HomeState {
     required DateTime selectedDate,
     @Default(<Todo>[]) List<Todo> toBeDeletedTodos,
     String? error,
-    @Default(false) bool isLoading,
+    @Default(true) bool isLoading,
   }) = _HomeState;
 
   // will start a delete debouce then if we cancel it

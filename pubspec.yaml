@@ -13,7 +13,6 @@ dependencies:
   bloc_concurrency: ^0.2.0
   database_repository:
     path: packages/database_repository
-  declarative_refresh_indicator: ^0.1.0
   easy_debounce: ^2.0.2+1
   equatable: ^2.0.3
   flutter:
