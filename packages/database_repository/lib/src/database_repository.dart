@@ -55,10 +55,8 @@ class DatabaseRepository {
       to: to.toIso8601String(),
     );
 
-    // print(k);
-
     if (res.isSuccessful) {
-      return res.body;
+      return res.body!.map((e) => e.copyWith(date: e.date!.toLocal())).toList();
     } else {
       throw Exception(_extractTitleFromError(res.error));
     }
@@ -137,7 +135,7 @@ class DatabaseRepository {
 
     if (res.isSuccessful) {
       log('got a todo ${res.body!.date!.toIso8601String()}');
-      return res.body!;
+      return res.body!.copyWith(date: res.body!.date!.toLocal());
     } else {
       log('getting todo failed');
       throw Exception(_extractTitleFromError(res.error));
