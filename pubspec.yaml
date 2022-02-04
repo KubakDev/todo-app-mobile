@@ -59,4 +59,4 @@ flutter:
   fonts:
     - family: Baloo
       fonts:
-        - asset: assets/fonts/baloo/Baloo.ttf
+        - asset: assets/fonts/baloo_regular/baloo.ttf
