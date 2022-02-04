@@ -34,7 +34,16 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<TodoGetEvent>((event, emit) async {
       try {
         emit(TodoLoading(state.todos));
-        final result = await database.getTodos(event.from, event.to);
+        final result = await database.getTodos(from: event.from, to: event.to);
+        emit(TodoLoaded(result ?? []));
+      } catch (e) {
+        emit(TodoError(e.toString(), state.todos));
+      }
+    });
+    on<TodoGetCheckedEvent>((event, emit) async {
+      try {
+        emit(TodoLoading(state.todos));
+        final result = await database.getTodos(isCompleted: true);
         emit(TodoLoaded(result ?? []));
       } catch (e) {
         emit(TodoError(e.toString(), state.todos));
@@ -71,6 +80,9 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       } catch (e, _) {
         emit(TodoError(e.toString(), state.todos));
       }
+    });
+    on<TodoDeleteCompletedEvent>((event, emit) async {
+      emit(TodoError('Not Implemented', state.todos));
     });
 
     on<TodoApplyUpdateEvent>((event, emit) async {

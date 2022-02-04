@@ -43,7 +43,7 @@ class AuthenticationRepository {
           auth0RedirectUri,
           issuer: auth0Issuer,
           refreshToken: storedRefreshToken,
-          scopes: <String>['openid', 'profile', 'offline_access'],
+          scopes: <String>['openid', 'profile', 'email', 'offline_access'],
 
           // additionalParameters: {'audience': 'http://localhost:5000'},
         ),
@@ -62,6 +62,7 @@ class AuthenticationRepository {
           AuthRepologgedIn(
             User(
               idToken['nickname'] as String? ?? '',
+              idToken['email'] as String? ?? '',
               profile['picture'] as String? ?? '',
             ),
           ),
@@ -107,7 +108,7 @@ class AuthenticationRepository {
           auth0ClientId,
           auth0RedirectUri,
           issuer: auth0Issuer,
-          scopes: <String>['openid', 'profile', 'offline_access'],
+          scopes: <String>['openid', 'profile', 'email', 'offline_access'],
           additionalParameters: {'audience': 'http://localhost:5000'},
         ),
       );
@@ -127,6 +128,7 @@ class AuthenticationRepository {
           AuthRepologgedIn(
             User(
               idToken['nickname'] as String? ?? '',
+              profile['email'] as String? ?? '',
               profile['picture'] as String? ?? '',
             ),
           ),

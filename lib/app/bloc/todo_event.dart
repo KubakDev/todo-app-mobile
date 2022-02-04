@@ -6,6 +6,8 @@ class TodoEvent with _$TodoEvent {
   const factory TodoEvent.updateTodo(Todo todo) = TodoUpdateEvent;
   const factory TodoEvent.deleteTodo(String id) = TodoDeleteEvent;
   const factory TodoEvent.getTodos(DateTime from, DateTime to) = TodoGetEvent;
+  const factory TodoEvent.getCheckedTodos() = TodoGetCheckedEvent;
+  const factory TodoEvent.deleteCompleted() = TodoDeleteCompletedEvent;
   const factory TodoEvent.applyUpdate({
     required List<Todo> todos,
     String? error,

@@ -43,21 +43,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
           iconColor: Colors.black,
           child: Column(
             children: [
-              Container(
-                width: 128,
-                height: 128,
-                margin: const EdgeInsets.only(
-                  top: 24,
-                  bottom: 64,
-                ),
-                clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(
-                  color: Colors.black26,
-                  shape: BoxShape.circle,
-                ),
-                child: Image.network(
-                  authState.user.pictureUrl,
-                ),
+              const SizedBox(height: 16),
+              CircleAvatar(
+                radius: 64,
+                backgroundImage: NetworkImage(authState.user.pictureUrl),
               ),
               ListTile(
                 onTap: () {
@@ -70,7 +59,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ListTile(
                 // ignore: unnecessary_lambdas
                 onTap: () {
-                  // todo context.vRouter.to(profilePath);
+                  context.vRouter.to(profilePath);
                   _advancedDrawerController.hideDrawer();
                 },
                 leading: const Icon(Icons.account_circle_rounded),

@@ -1296,7 +1296,7 @@ class _$HomeStateTearOff {
       required DateTime selectedDate,
       List<Todo> toBeDeletedTodos = const <Todo>[],
       String? error,
-      bool isLoading = false}) {
+      bool isLoading = true}) {
     return _HomeState(
       todos: todos,
       datesWithTodos: datesWithTodos,
@@ -1470,7 +1470,7 @@ class _$_HomeState with DiagnosticableTreeMixin implements _HomeState {
       required this.selectedDate,
       this.toBeDeletedTodos = const <Todo>[],
       this.error,
-      this.isLoading = false});
+      this.isLoading = true});
 
   @JsonKey()
   @override

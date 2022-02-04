@@ -49,6 +49,12 @@ class AppWidget extends StatelessWidget {
       routes: generateRoutes(authBloc),
       debugShowCheckedModeBanner: false,
       theme: themeData(context),
+      buildTransition: (context, animation, child) {
+        return FadeTransition(
+          opacity: context,
+          child: child,
+        );
+      },
       builder: (context, child) {
         return BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {

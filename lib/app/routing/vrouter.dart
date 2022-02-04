@@ -6,11 +6,13 @@ import 'package:todo_app/app/bloc/todo_bloc.dart';
 import 'package:todo_app/edit_task/view/edit_task_page.dart';
 import 'package:todo_app/home/view/home_page.dart';
 import 'package:todo_app/login/login.dart';
+import 'package:todo_app/profile/view/profile_page.dart';
 import 'package:todo_app/shared/widgets/drawer.dart';
 import 'package:vrouter/vrouter.dart';
 
 const loginPath = '/login';
 const homePath = '/home';
+const profilePath = '/profile';
 const editTaskPath = '/edit';
 List<VRouteElement> generateRoutes(AuthBloc authBloc) {
   return [
@@ -62,6 +64,10 @@ List<VRouteElement> generateRoutes(AuthBloc authBloc) {
                 ),
                 VWidget(path: editTaskPath, widget: const EditTaskPage()),
               ],
+            ),
+            VWidget(
+              path: profilePath,
+              widget: const ProfilePage(),
             ),
           ],
         ),

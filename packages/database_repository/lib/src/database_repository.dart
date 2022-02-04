@@ -19,7 +19,7 @@ class DatabaseRepository {
         Swagger.create(),
       ],
       converter: $JsonSerializableConverter(),
-      baseUrl: 'https://kubak-todo.loca.lt',
+      baseUrl: 'https://stale-robin-80.loca.lt',
       interceptors: <dynamic>[
         (Request request) => applyHeader(
               request,
@@ -47,18 +47,20 @@ class DatabaseRepository {
 
   void dispose() => _controller.close();
 
-  Future<List<Todo>?> getTodos(DateTime from, DateTime to) async {
+  Future<List<Todo>?> getTodos({
+    DateTime? from,
+    DateTime? to,
+    bool? isCompleted,
+  }) async {
     final todosService = chopperClient.getService<Swagger>();
-
     final res = await todosService.todosGet(
-      from: from.toIso8601String(),
-      to: to.toIso8601String(),
+      from: from?.toIso8601String(),
+      to: to?.toIso8601String(),
+      isComplete: isCompleted,
     );
 
-    // print(k);
-
     if (res.isSuccessful) {
-      return res.body;
+      return res.body!.map((e) => e.copyWith(date: e.date!.toLocal())).toList();
     } else {
       throw Exception(_extractTitleFromError(res.error));
     }
@@ -122,7 +124,7 @@ class DatabaseRepository {
 
     if (res.isSuccessful) {
       log('updated a todo');
-      return res.body!;
+      return res.body!.copyWith(date: res.body!.date!.toLocal());
     } else {
       log('update failed');
       throw Exception(_extractTitleFromError(res.error));
@@ -137,7 +139,7 @@ class DatabaseRepository {
 
     if (res.isSuccessful) {
       log('got a todo ${res.body!.date!.toIso8601String()}');
-      return res.body!;
+      return res.body!.copyWith(date: res.body!.date!.toLocal());
     } else {
       log('getting todo failed');
       throw Exception(_extractTitleFromError(res.error));
