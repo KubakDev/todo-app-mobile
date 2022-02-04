@@ -371,7 +371,8 @@ class HomeViewState extends State<HomeView> {
                                         overflow: TextOverflow.fade,
                                         style: TextStyle(
                                           fontSize: 20,
-                                          decoration: _inDeleteQueue
+                                          decoration: _inDeleteQueue ||
+                                                  (todo.isComplete ?? false)
                                               ? TextDecoration.lineThrough
                                               : null,
                                         ),

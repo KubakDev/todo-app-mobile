@@ -8,7 +8,6 @@ import 'package:todo_app/app/bloc/todo_bloc.dart';
 import 'package:todo_app/app/routing/vrouter.dart';
 import 'package:todo_app/edit_task/cubit/cubit.dart';
 import 'package:todo_app/shared/shared.dart';
-import 'package:todo_app/shared/widgets/unfocuser.dart';
 import 'package:vrouter/vrouter.dart';
 
 class EditTaskPage extends StatelessWidget {
@@ -84,7 +83,7 @@ class _EditTaskViewState extends State<EditTaskView> {
                         if (index == 0) {
                           context.vRouter.to(homePath);
                         } else if (index == 2) {
-                          // todo context.vRouter.to(profilePath);
+                          context.vRouter.to(profilePath);
                         }
                       },
                       items: [

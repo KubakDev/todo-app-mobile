@@ -19,7 +19,7 @@ class DatabaseRepository {
         Swagger.create(),
       ],
       converter: $JsonSerializableConverter(),
-      baseUrl: 'https://kubak-todo.loca.lt',
+      baseUrl: 'https://stale-robin-80.loca.lt',
       interceptors: <dynamic>[
         (Request request) => applyHeader(
               request,
@@ -47,12 +47,16 @@ class DatabaseRepository {
 
   void dispose() => _controller.close();
 
-  Future<List<Todo>?> getTodos(DateTime from, DateTime to) async {
+  Future<List<Todo>?> getTodos({
+    DateTime? from,
+    DateTime? to,
+    bool? isCompleted,
+  }) async {
     final todosService = chopperClient.getService<Swagger>();
-
     final res = await todosService.todosGet(
-      from: from.toIso8601String(),
-      to: to.toIso8601String(),
+      from: from?.toIso8601String(),
+      to: to?.toIso8601String(),
+      isComplete: isCompleted,
     );
 
     if (res.isSuccessful) {
@@ -120,7 +124,7 @@ class DatabaseRepository {
 
     if (res.isSuccessful) {
       log('updated a todo');
-      return res.body!;
+      return res.body!.copyWith(date: res.body!.date!.toLocal());
     } else {
       log('update failed');
       throw Exception(_extractTitleFromError(res.error));
