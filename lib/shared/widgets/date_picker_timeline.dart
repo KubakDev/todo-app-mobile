@@ -187,8 +187,8 @@ class _DatePickerTimelineState extends State<DatePickerTimeline> {
                                       fontSize: 40,
                                       fontWeight: FontWeight.bold,
                                       color: selectedIndex == i
-                                          ? Colors.white
-                                          : Colors.black,
+                                          ? theme.colorScheme.surface
+                                          : theme.colorScheme.onSurface,
                                     ),
                                   ),
                                   Text(
@@ -196,8 +196,8 @@ class _DatePickerTimelineState extends State<DatePickerTimeline> {
                                     style: TextStyle(
                                       fontSize: 16,
                                       color: selectedIndex == i
-                                          ? Colors.white
-                                          : Colors.black,
+                                          ? theme.colorScheme.surface
+                                          : theme.colorScheme.onSurface,
                                     ),
                                   ),
                                 ],

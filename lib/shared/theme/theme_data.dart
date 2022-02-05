@@ -9,24 +9,19 @@ ThemeData themeData(
   final kPrimaryColor =
       dark ? const Color(0xFF6D4AFC) : const Color(0xFF6D4AFC);
   final kPrimaryColor2 =
-      dark ? const Color.fromARGB(255, 67, 39, 179) : const Color(0xFF967EF9);
-  final kPrimaryColor3 =
-      dark ? const Color.fromARGB(255, 48, 31, 116) : const Color(0xFFB4A1FF);
+      dark ? const Color(0xFF4327B3) : const Color(0xFF967EF9);
   final kPrimaryColor4 =
-      dark ? const Color.fromARGB(255, 26, 16, 61) : const Color(0xFFEAE4FF);
+      dark ? const Color(0xFF1A103D) : const Color(0xFFEAE4FF);
   final kPrimaryColor5 =
-      dark ? const Color.fromARGB(255, 19, 10, 48) : const Color(0xFFF9F7FF);
+      dark ? const Color(0xFF130A30) : const Color(0xFFF9F7FF);
   final kSecondaryColor =
       dark ? const Color(0xFFF778BA) : const Color(0xFFF778BA);
-  // final kSecondaryColor2 =dark ? const Color.fromARGB(255, 168, 61, 116)
-  //: const Color(0xFFF885C0);
   final kSecondaryColor3 =
-      dark ? const Color.fromARGB(255, 121, 36, 80) : const Color(0xFFFFC2E2);
+      dark ? const Color(0xFF792450) : const Color(0xFFFFC2E2);
   final kSecondaryColor4 =
-      dark ? const Color.fromARGB(255, 54, 16, 37) : const Color(0xFFFFF2F9);
-  final background = dark ? Colors.black : Colors.white;
+      dark ? const Color(0xFF361025) : const Color(0xFFFFF2F9);
+  final background = dark ? const Color(0xFF161616) : Colors.white;
   final forground = dark ? Colors.white : Colors.black;
-
   return ThemeData(
     appBarTheme: AppBarTheme(
       color: background,
@@ -72,15 +67,29 @@ ThemeData themeData(
     colorScheme: ColorScheme.fromSwatch(
       accentColor: createMaterialColor(kSecondaryColor),
       primarySwatch: createMaterialColor(kPrimaryColor),
+      primaryColorDark: createMaterialColor(kPrimaryColor),
       backgroundColor: background,
       cardColor: createMaterialColor(kPrimaryColor4),
+      brightness: dark ? Brightness.dark : Brightness.light,
     ),
     cardColor: kPrimaryColor4,
     hintColor: kPrimaryColor2,
-    dialogBackgroundColor: kPrimaryColor3,
+    primaryColorDark: kPrimaryColor,
+    switchTheme: SwitchThemeData(
+      thumbColor: MaterialStateProperty.resolveWith(
+        (states) => states.contains(MaterialState.selected)
+            ? kPrimaryColor
+            : kSecondaryColor,
+      ),
+      trackColor: MaterialStateProperty.resolveWith(
+        (states) => states.contains(MaterialState.selected)
+            ? kPrimaryColor2
+            : kSecondaryColor3,
+      ),
+    ),
+    dialogBackgroundColor: kPrimaryColor5,
     dividerColor: kPrimaryColor5,
     listTileTheme: ListTileThemeData(
-      // dense: true,
       selectedColor: kPrimaryColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),

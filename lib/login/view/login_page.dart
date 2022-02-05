@@ -79,7 +79,7 @@ class _LoginViewState extends State<LoginView>
               ),
               upperLayer: Container(
                 decoration: BoxDecoration(
-                  color: theme.dialogBackgroundColor.withOpacity(0.1),
+                  color: theme.hintColor.withOpacity(0.1),
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(40),
                     topRight: Radius.circular(40),

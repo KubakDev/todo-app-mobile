@@ -27,7 +27,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     final auth = context.read<AuthBloc>();
-    final authState = auth.state as AuthLoggedIn;
+    final authState =
+        auth.state is AuthLoggedIn ? auth.state as AuthLoggedIn : null;
     final theme = Theme.of(context);
     return AdvancedDrawer(
       backdropColor: theme.dividerColor,
@@ -38,56 +39,56 @@ class _CustomDrawerState extends State<CustomDrawer> {
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       drawer: SafeArea(
-        child: ListTileTheme(
-          textColor: Colors.black,
-          iconColor: Colors.black,
-          child: Column(
-            children: [
-              const SizedBox(height: 16),
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            if (authState != null)
               CircleAvatar(
                 radius: 64,
                 backgroundImage: NetworkImage(authState.user.pictureUrl),
               ),
-              ListTile(
-                onTap: () {
-                  context.vRouter.to(homePath);
-                  _advancedDrawerController.hideDrawer();
-                },
-                leading: const Icon(Icons.home),
-                title: const Text('Home'),
-              ),
-              ListTile(
-                onTap: () {
-                  context.vRouter.to(profilePath);
-                  _advancedDrawerController.hideDrawer();
-                },
-                leading: const Icon(Icons.account_circle_rounded),
-                title: const Text('Profile'),
-              ),
-              ListTile(
-                onTap: () {
-                  context.vRouter.to(settingsPath);
+            const Spacer(),
+            ListTile(
+              onTap: () {
+                context.vRouter.to(homePath);
+                _advancedDrawerController.hideDrawer();
+              },
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+            ),
+            ListTile(
+              onTap: () {
+                context.vRouter.to(profilePath);
+                _advancedDrawerController.hideDrawer();
+              },
+              leading: const Icon(Icons.account_circle_rounded),
+              title: const Text('Profile'),
+            ),
+            ListTile(
+              onTap: () {
+                context.vRouter.to(settingsPath);
 
-                  _advancedDrawerController.hideDrawer();
-                },
-                leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
+                _advancedDrawerController.hideDrawer();
+              },
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+            ),
+            const Spacer(
+              flex: 2,
+            ),
+            DefaultTextStyle(
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.black54,
               ),
-              const Spacer(),
-              DefaultTextStyle(
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.black54,
+              child: Container(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 16,
                 ),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
-                  child: const Text('Terms of Service | Privacy Policy'),
-                ),
+                child: const Text('Terms of Service | Privacy Policy'),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       child: ListenableProvider.value(

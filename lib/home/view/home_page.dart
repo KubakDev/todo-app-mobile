@@ -244,6 +244,10 @@ class HomeViewState extends State<HomeView> {
                                 ),
                                 const Spacer(),
                                 MenuButton<TodoFilter>(
+                                  itemBackgroundColor:
+                                      theme.scaffoldBackgroundColor,
+                                  menuButtonBackgroundColor:
+                                      theme.scaffoldBackgroundColor,
                                   items: const [
                                     TodoFilter.all,
                                     TodoFilter.active,
