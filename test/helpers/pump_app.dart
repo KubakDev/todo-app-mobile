@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:todo_app/app/bloc/auth_bloc.dart';
+import 'package:todo_app/app/bloc/bloc.dart';
 
 class MockAuthRepository extends Mock implements AuthenticationRepository {}
 

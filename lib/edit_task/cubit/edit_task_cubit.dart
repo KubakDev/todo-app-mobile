@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:database_repository/database_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:todo_app/app/bloc/todo_bloc.dart';
+import 'package:todo_app/app/app.dart';
 
 part 'edit_task_state.dart';
 part 'edit_task_cubit.freezed.dart';

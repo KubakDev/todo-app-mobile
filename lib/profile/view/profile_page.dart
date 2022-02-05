@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/app/bloc/auth_bloc.dart';
-import 'package:todo_app/app/bloc/todo_bloc.dart';
+import 'package:todo_app/app/bloc/bloc.dart';
 import 'package:todo_app/app/routing/vrouter.dart';
 import 'package:todo_app/shared/shared.dart';
 import 'package:vrouter/vrouter.dart';
@@ -32,7 +31,10 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final authState = context.read<AuthBloc>().state as AuthLoggedIn;
+    final auth = context.read<AuthBloc>();
+    final authState =
+        auth.state is AuthLoggedIn ? auth.state as AuthLoggedIn : null;
+
     final todoBloc = context.read<TodoBloc>();
     return Scaffold(
       bottomNavigationBar: SafeArea(
@@ -94,15 +96,18 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
                 child: Column(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(authState.user.pictureUrl),
-                      radius: 50,
-                    ),
+                    if (authState != null)
+                      CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(authState.user.pictureUrl),
+                        radius: 50,
+                      ),
                     const SizedBox(height: 16),
-                    Text(
-                      authState.user.name,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
+                    if (authState != null)
+                      Text(
+                        authState.user.name,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
                   ],
                 ),
               ),
@@ -126,10 +131,11 @@ class _ProfileViewState extends State<ProfileView> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    Text(
-                      authState.user.email,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
+                    if (authState != null)
+                      Text(
+                        authState.user.email,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
                   ],
                 ),
               ),

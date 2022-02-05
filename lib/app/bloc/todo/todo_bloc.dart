@@ -6,7 +6,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:todo_app/app/bloc/auth_bloc.dart';
+import 'package:todo_app/app/bloc/auth/auth_bloc.dart';
 
 part 'todo_bloc.freezed.dart';
 part 'todo_event.dart';

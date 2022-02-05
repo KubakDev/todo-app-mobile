@@ -19,7 +19,7 @@ class DatabaseRepository {
         Swagger.create(),
       ],
       converter: $JsonSerializableConverter(),
-      baseUrl: 'https://stale-robin-80.loca.lt',
+      baseUrl: 'https://todo.kubak.dev/api/',
       interceptors: <dynamic>[
         (Request request) => applyHeader(
               request,

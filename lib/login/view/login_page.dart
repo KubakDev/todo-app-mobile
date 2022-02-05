@@ -9,9 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rubber/rubber.dart';
-import 'package:todo_app/app/bloc/auth_bloc.dart';
+import 'package:todo_app/app/bloc/bloc.dart';
 // import 'package:todo_app/l10n/l10n.dart';
-import 'package:todo_app/shared/shared.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -48,6 +47,7 @@ class _LoginViewState extends State<LoginView>
   Widget build(BuildContext context) {
     final auth = context.read<AuthBloc>();
     final size = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
@@ -57,7 +57,7 @@ class _LoginViewState extends State<LoginView>
           );
         }
         return Scaffold(
-          backgroundColor: kPrimaryColor4,
+          backgroundColor: theme.cardColor,
           body: SafeArea(
             child: RubberBottomSheet(
               dragFriction: 0.7,
@@ -79,7 +79,7 @@ class _LoginViewState extends State<LoginView>
               ),
               upperLayer: Container(
                 decoration: BoxDecoration(
-                  color: kPrimaryColor3.withOpacity(0.1),
+                  color: theme.hintColor.withOpacity(0.1),
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(40),
                     topRight: Radius.circular(40),
@@ -104,7 +104,7 @@ class _LoginViewState extends State<LoginView>
                           height: 5,
                           margin: const EdgeInsets.only(top: 8),
                           decoration: BoxDecoration(
-                            color: kSecondaryColor,
+                            color: theme.colorScheme.secondary,
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
@@ -118,21 +118,29 @@ class _LoginViewState extends State<LoginView>
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 Text(
                                   '''
 We are
 what we do''',
-                                  style: kTextStyleH1,
+                                  style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colorScheme.primary,
+                                  ),
                                   textAlign: TextAlign.left,
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Text(
                                   '''
 Todo helps you remember
 your important tasks''',
                                   textAlign: TextAlign.left,
-                                  style: kTextStyleH2,
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colorScheme.primary,
+                                  ),
                                 ),
                               ],
                             ),
@@ -144,10 +152,10 @@ your important tasks''',
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            gradient: const LinearGradient(
+                            gradient: LinearGradient(
                               colors: [
-                                kSecondaryColor,
-                                kSecondaryColor2,
+                                theme.colorScheme.secondary,
+                                theme.colorScheme.secondaryContainer,
                               ],
                             ),
                           ),

@@ -15,67 +15,37 @@ class FilterIcon extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (filter == TodoFilter.all) ...[
-              const Icon(
-                Icons.circle,
-                size: 6,
-              ),
-              const SizedBox(
-                height: 2,
-              ),
-              const Icon(
-                Icons.circle_outlined,
-                size: 6,
-              ),
+              const Icon(Icons.circle, size: 6),
+              const SizedBox(height: 2),
+              const Icon(Icons.circle_outlined, size: 6),
             ],
             if (filter == TodoFilter.completed) ...[
-              const Icon(
-                Icons.circle,
-                size: 6,
-              ),
-              const SizedBox(
-                height: 2,
-              ),
-              const Icon(
-                Icons.circle,
-                size: 6,
-              ),
+              const Icon(Icons.circle, size: 6),
+              const SizedBox(height: 2),
+              const Icon(Icons.circle, size: 6),
             ],
             if (filter == TodoFilter.active) ...[
-              const Icon(
-                Icons.circle_outlined,
-                size: 6,
-              ),
-              const SizedBox(
-                height: 2,
-              ),
-              const Icon(
-                Icons.circle_outlined,
-                size: 6,
-              ),
+              const Icon(Icons.circle_outlined, size: 6),
+              const SizedBox(height: 2),
+              const Icon(Icons.circle_outlined, size: 6),
             ],
           ],
         ),
-        const SizedBox(
-          width: 2,
-        ),
+        const SizedBox(width: 2),
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
               width: 8,
               height: 2,
-              margin: const EdgeInsets.symmetric(
-                vertical: 3,
-              ),
+              margin: const EdgeInsets.symmetric(vertical: 3),
             ),
             Container(
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
               width: 10,
               height: 2,
-              margin: const EdgeInsets.symmetric(
-                vertical: 3,
-              ),
+              margin: const EdgeInsets.symmetric(vertical: 3),
             ),
           ],
         )
