@@ -4,5 +4,5 @@
     <item android:drawable="@android:color/white" />
 
     <!-- You can insert your own image assets here -->
-    <item android:gravity="center" android:drawable="@drawable/ic_path_3_d" android:top="5px" android:bottom="5px" android:left="5px" android:right="5px"/>
+    <item android:gravity="center" android:drawable="@mipmap/ic_launcher_foreground" android:top="5px" android:bottom="5px" android:left="5px" android:right="5px"/>
 </layer-list>
