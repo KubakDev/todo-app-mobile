@@ -33,6 +33,18 @@ _\*Todo App works on iOS, Android, and Web._
 
 ---
 
+## Building
+
+To update the API you will need
+
+- NodeJs 
+- jq
+
+Then run the following command in the home dir
+```sh 
+generate_api.sh
+```
+---
 ## Running Tests 🧪
 
 To run all unit and widget tests use the following command:
