@@ -14,7 +14,7 @@ void main() {
   bootstrap(
     () => App(
       authRepo: AuthenticationRepository(),
-      databaseRepo: DatabaseRepository(),
+      databaseRepo: DatabaseRepositoryChopper(),
     ),
   );
 }
